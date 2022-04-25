@@ -135,7 +135,7 @@ dataloader:
       params:
         data_root: /data/zhuye/CUB-200-2011/CUB_200_2011
         phase: train
-        negative_sample_path: './image_synthesis/data/cub_negative_samples.json'
+        negative_sample_path: ./image_synthesis/data/cub_negative_samples.json
         im_preprocessor_config:
           target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor   # ImageNet
           params:

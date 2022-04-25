@@ -78,7 +78,7 @@ solver:
   adjust_lr: none # not adjust lr according to total batch_size
   max_epochs: 100
   save_epochs: 2
-  validation_epochs: 5
+  validation_epochs: 101
   sample_iterations: epoch  # epoch #30000      # how many iterations to perform sampling once ?
   print_specific_things: True
 
