@@ -22,6 +22,10 @@ In case of running on the cluster, a bash script may be further needed to submit
 
 
 ### ImageNet Dataset
+
+For the experiments on the ImageNet, the pretrained vqgan model is different, need to download this model [vqgan_imagenet_f16_16384.pth](https://facevcstandard.blob.core.windows.net/t-shuygu/release_model/VQ-Diffusion/pretrained_model/taming_dvae/vqgan_imagenet_f16_16384.pth?sv=2019-12-12&st=2021-12-21T04%3A28%3A27Z&se=2028-12-22T04%3A28%3A00Z&sr=b&sp=r&sig=W5LJJ23tIdkLS7QIJJcxdTdo164i3X%2BCgdDZaAREapE%3D). This path need to be specified in the config/imagenet.yaml
+
+
 1. ImageNet experiments use the class label embedding as the conditioning information. The extra negative samples are directly sampled in the dataloader, no extra file is needed. This option can be turned off by modifying the inter_negative_samples param in line 114 and 126 in the config/imagenet.yaml
 
 2. Also try to modify the batch size in the imagenet.yaml to make better use of the memory/
