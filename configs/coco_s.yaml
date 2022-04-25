@@ -32,7 +32,7 @@ model:
     # target: image_synthesis.modeling.transformers.gpt_like_transformer.GPTLikeTransformer
       target: image_synthesis.modeling.transformers.diffusion_transformer.DiffusionTransformer
       params:
-        diffusion_step: 100
+        diffusion_step: 80
         alpha_init_type: 'alpha1'       # init_type = fix or cos or linear 
         auxiliary_loss_weight: 5.0e-4
         adaptive_auxiliary_loss: True
@@ -84,7 +84,7 @@ solver:
   adjust_lr: none # not adjust lr according to total batch_size
   max_epochs: 100
   save_epochs: 2
-  validation_epochs: 5
+  validation_epochs: 101
   sample_iterations: epoch  # epoch #30000      # how many iterations to perform sampling once ?
   print_specific_things: True
 
@@ -134,6 +134,7 @@ dataloader:
       params:
         data_root: /data/zhuye/MSCOCO_Caption
         phase: train
+        negative_sample_path: './image_synthesis/data/coco_negative_samples.json'
         im_preprocessor_config:
           target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor   # ImageNet
           params:
