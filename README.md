@@ -4,6 +4,9 @@
 ### To run the sample-wise contrastive diffusion for the image generation task, the env setup is the same as previous step-wise constrastive diffusion setting.
 Compared to the previous step-wise diffusion, I modify the dataloader to include extra negative samples, and add the sample-wise auxiliary contrastive loss in diffusion.
 
+### CUB-200 Dataset
+I have finished the experiments on this dataset.
+
 ### COCO Dataset
 1. First, we need to prepare some extra instance-level negative samples for each image from the training set. The extra negative samples are stored in the coco_negative_samples.json file in the ./image_synthesis/data folder.
 

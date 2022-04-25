@@ -91,22 +91,22 @@ class DALLE(nn.Module):
         negative_key = self.negative_info['key']
         n_cont = batch[negative_key]
         # print("check original neg cont size:", n_cont.size())
-        # if n_cont != None:
-        #     for i in range(n_cont.size()[0]):
-        #         n_cont_i = n_cont[i,:,:,:]
-        #         if torch.is_tensor(n_cont_i):
-        #             n_cont_i = n_cont_i.to(self.device)
-        #             n_cont_i = self.content_codec.get_tokens(n_cont_i)
-        #             for k, v in n_cont_i.items():
-        #                 v = v.to(self.device) if torch.is_tensor(v) else v
-        #                 # print("check k and v in negative samples:", k, v, v.size())
-        #             if i == 0:
-        #                 negative_token = v.unsqueeze(0)
-        #             else:
-        #                 negative_token = torch.cat((negative_token,v.unsqueeze(0)),0)
-        #     cont_['negative_token'] = negative_token
-        # else:
-        cont_['negative_token'] = None
+        if n_cont != None:
+            for i in range(n_cont.size()[0]):
+                n_cont_i = n_cont[i,:,:,:]
+                if torch.is_tensor(n_cont_i):
+                    n_cont_i = n_cont_i.to(self.device)
+                    n_cont_i = self.content_codec.get_tokens(n_cont_i)
+                    for k, v in n_cont_i.items():
+                        v = v.to(self.device) if torch.is_tensor(v) else v
+                        # print("check k and v in negative samples:", k, v, v.size())
+                    if i == 0:
+                        negative_token = v.unsqueeze(0)
+                    else:
+                        negative_token = torch.cat((negative_token,v.unsqueeze(0)),0)
+            cont_['negative_token'] = negative_token
+        else:
+            cont_['negative_token'] = None
 
         # print("check final neg token:", negative_token.size())
 

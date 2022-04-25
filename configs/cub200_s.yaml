@@ -14,7 +14,7 @@ model:
         ckpt_path: '/home/zhuye/VQ-Diffusion_d2m/OUTPUT/pretrained_model/taming_dvae/taming_f8_8192_openimages_last.pth'
         num_tokens: 8192
         quantize_number: 2887
-        mapping_path: '/home/zhuye/VQ-Diffusion_d2m/help_folder/statistics/taming_vqvae_2887.pt'
+        mapping_path: './help_folder/statistics/taming_vqvae_2887.pt'
         # return_logits: True
     condition_codec_config:
       target: image_synthesis.modeling.codecs.text_codec.tokenize.Tokenize
@@ -32,13 +32,13 @@ model:
     # target: image_synthesis.modeling.transformers.gpt_like_transformer.GPTLikeTransformer
       target: image_synthesis.modeling.transformers.diffusion_transformer.DiffusionTransformer
       params:
-        diffusion_step: 100
+        diffusion_step: 80
         alpha_init_type: 'alpha1'       # init_type = fix or cos or linear 
         auxiliary_loss_weight: 5.0e-4
-        contrastive_intra_loss_weight: 0
+        contrastive_intra_loss_weight: 0 #5.0e-6 suggested value
         intra_mode: 'step'
         intra_neg_sample: 10
-        contrastive_inter_loss_weight: 5.0e-6
+        contrastive_inter_loss_weight: 5.0e-6 #5.0e-6 suggested value
         inter_mode: 'sample'
         inter_neg_sample: 10 
         adaptive_auxiliary_loss: True
@@ -135,7 +135,7 @@ dataloader:
       params:
         data_root: /data/zhuye/CUB-200-2011/CUB_200_2011
         phase: train
-        negative_sample_path: '/home/zhuye/VQ-Diffusion/image_synthesis/data/cub_extra_negative_samples.json'
+        negative_sample_path: './image_synthesis/data/cub_negative_samples.json'
         im_preprocessor_config:
           target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor   # ImageNet
           params:
@@ -146,6 +146,7 @@ dataloader:
       params:
         data_root: /data/zhuye/CUB-200-2011/CUB_200_2011 # /mnt/blob/datasets/CUB-200
         phase: test
+        negative_sample_path: None
         im_preprocessor_config:
           target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
           params:
