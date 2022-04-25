@@ -30,6 +30,8 @@ class Cub200Dataset(Dataset):
             # self.extra_img = os.path.join()
             print("negative_sample_path:", negative_sample_path, len(self.extra_img))
             print("check path:", self.extra_img[0])
+        else:
+            self.extra_img = None
 
         # load all caption file to dict in memory
         self.caption_dict = {}

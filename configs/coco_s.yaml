@@ -145,6 +145,7 @@ dataloader:
       params:
         data_root: /data/zhuye/MSCOCO_Caption
         phase: val
+        negative_sample_path:
         im_preprocessor_config:
           target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
           params:

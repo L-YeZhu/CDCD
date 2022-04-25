@@ -14,7 +14,7 @@ def load_img(filepath):
     return img
 
 class ImageNetDataset(Dataset):
-    def __init__(self, data_root, input_file, phase = 'train', im_preprocessor_config=None):
+    def __init__(self, data_root, input_file, inter_negative_samples, phase = 'train', im_preprocessor_config=None):
         self.transform = instantiate_from_config(im_preprocessor_config)
         self.root = os.path.join(data_root, phase)
         # input_file = os.path.join(data_root, input_file)
@@ -40,8 +40,10 @@ class ImageNetDataset(Dataset):
 
         self.num = len(self.A_paths)
         self.A_size = len(self.A_paths)
-        # print("check path:", self.A_paths, len(self.A_paths))
-        # print("check labels:", self.A_labels, len(self.A_labels))
+        self.phase = phase
+        self.inter_negative_samples = inter_negative_samples
+        # print("check path:",  len(self.A_paths))
+        # print("check labels:",  len(self.A_labels))
         # exit()
  
     def __len__(self):
@@ -59,11 +61,28 @@ class ImageNetDataset(Dataset):
         # if self.transform is not None:
         A = self.transform(A)['image']
         A_label = self.A_labels[index % self.A_size]
-        # print("check dataloader img:", A, np.shape(A))
-        # print("check dataloader label:", A_label)
-        # exit()
-        data = {
-                'image': np.transpose(A.astype(np.float32), (2, 0, 1)),
-                'label': A_label,
+        if self.phase == 'train' and self.inter_negative_samples == True:
+            # neg_count = 0
+            for i in range(10):
+                idx = random.randint(0, self.__len__()-1)
+                neg_img_path = self.A_paths[idx % self.A_size]
+                img = load_img(neg_img_path)
+                img = self.transform(image = img)['image']
+                if i == 0:
+                    neg_img = np.expand_dims(img, axis=0)
+                else:
+                    img = np.expand_dims(img, axis=0)
+                    neg_img = np.concatenate((neg_img, img), axis=0)
+            # print("check neg_img:", np.shape(neg_img))
+            data = {
+                    'image': np.transpose(A.astype(np.float32), (2, 0, 1)),
+                    'label': A_label,
+                    'negative_img': np.transpose(neg_img.astype(np.float32), (0, 3, 1, 2)),
+                }           
+
+        else:
+            data = {
+                    'image': np.transpose(A.astype(np.float32), (2, 0, 1)),
+                    'label': A_label,
                 }
         return data

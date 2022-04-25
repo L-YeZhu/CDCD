@@ -22,12 +22,14 @@ class C_DALLE(nn.Module):
         *,
         content_info={'key': 'image'},
         condition_info={'key': 'label'},
+        negative_samples={'key': 'negative_img'},
         content_codec_config,
         diffusion_config
     ):
         super().__init__()
         self.content_info = content_info
         self.condition_info = condition_info
+        self.negative_info = negative_samples
         self.content_codec = instantiate_from_config(content_codec_config)
         self.transformer = instantiate_from_config(diffusion_config)
         self.truncation_forward = False
@@ -79,6 +81,30 @@ class C_DALLE(nn.Module):
         for k, v in cont.items():
             v = v.to(self.device) if torch.is_tensor(v) else v
             cont_['content_' + k] = v
+
+        negative_key = self.negative_info['key']
+        try:
+            n_cont = batch[negative_key]
+            # print("check original neg cont size:", n_cont.size())
+        except:
+            n_cont = None
+        if n_cont != None:
+            for i in range(n_cont.size()[0]):
+                n_cont_i = n_cont[i,:,:,:]
+                if torch.is_tensor(n_cont_i):
+                    n_cont_i = n_cont_i.to(self.device)
+                    n_cont_i = self.content_codec.get_tokens(n_cont_i)
+                    for k, v in n_cont_i.items():
+                        v = v.to(self.device) if torch.is_tensor(v) else v
+                        # print("check k and v in negative samples:", k, v, v.size())
+                    if i == 0:
+                        negative_token = v.unsqueeze(0)
+                    else:
+                        negative_token = torch.cat((negative_token,v.unsqueeze(0)),0)
+            cont_['negative_token'] = negative_token
+        else:
+            cont_['negative_token'] = None
+
         return cont_
     
     @torch.no_grad()

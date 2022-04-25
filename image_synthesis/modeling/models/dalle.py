@@ -89,8 +89,11 @@ class DALLE(nn.Module):
             cont_['content_' + k] = v
 
         negative_key = self.negative_info['key']
-        n_cont = batch[negative_key]
-        # print("check original neg cont size:", n_cont.size())
+        try:
+            n_cont = batch[negative_key]
+            # print("check original neg cont size:", n_cont.size())
+        except:
+            n_cont = None
         if n_cont != None:
             for i in range(n_cont.size()[0]):
                 n_cont_i = n_cont[i,:,:,:]

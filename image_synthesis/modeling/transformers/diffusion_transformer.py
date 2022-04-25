@@ -460,7 +460,7 @@ class DiffusionTransformer(nn.Module):
         ### Contrastive inter loss
         if self.contrastive_inter_loss_weight != 0 and is_train == True and self.inter_mode == 'sample' and negative_img != None:
             loss4 = 0
-            # print("------Sample Contrastive with Inter negatives!----")
+            print("------Sample Contrastive with Inter negatives!----")
             extra_sample = 10 # negative_img.size()[1]
             for k in range(extra_sample):
                 x_extra = negative_img[:,k,:]

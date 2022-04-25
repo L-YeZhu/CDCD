@@ -146,7 +146,7 @@ dataloader:
       params:
         data_root: /data/zhuye/CUB-200-2011/CUB_200_2011 # /mnt/blob/datasets/CUB-200
         phase: test
-        negative_sample_path: None
+        negative_sample_path:
         im_preprocessor_config:
           target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
           params:

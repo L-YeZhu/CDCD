@@ -10,7 +10,7 @@ model:
         trainable: False
         token_shape: [16, 16]
         config_path: 'OUTPUT/pretrained_model/taming_dvae/vqgan_imagenet_f16_16384.yaml'
-        ckpt_path: 'OUTPUT/pretrained_model/taming_dvae/vqgan_imagenet_f16_16384.pth'
+        ckpt_path: '/home/zhuye/VQ-Diffusion/OUTPUT/pretrained_model/taming_dvae/vqgan_imagenet_f16_16384.pth'
         num_tokens: 16384
         quantize_number: 974
         mapping_path: './help_folder/statistics/taming_vqvae_974.pt'
@@ -18,11 +18,16 @@ model:
     diffusion_config:      
       target: image_synthesis.modeling.transformers.diffusion_transformer.DiffusionTransformer
       params:
-        diffusion_step: 100
+        diffusion_step: 80
         alpha_init_type: 'alpha1'        
         auxiliary_loss_weight: 1.0e-3
         adaptive_auxiliary_loss: True
         mask_weight: [1, 1]    # the loss weight on mask region and non-mask region
+        contrastive_intra_loss_weight: 0
+        intra_mode: 'step' # default to be step
+        intra_neg_sample: 10
+        contrastive_inter_loss_weight: 5.0e-6
+        inter_mode: 'sample' # default to be sample
 
         transformer_config:
           target: image_synthesis.modeling.transformers.transformer_utils.Condition2ImageTransformer
@@ -98,14 +103,15 @@ solver:
 
 dataloader:
   data_root: /data/zhuye/imagenet #/mnt/blob/datasets/ImageNet-2012
-  batch_size: 32
+  batch_size: 24
   num_workers: 4
   train_datasets: # a list of configures, so we can combine several schedulers
     - target: image_synthesis.data.imagenet_dataset.ImageNetDataset
       params:
         data_root: /mnt/blob/datasets/ImageNet-2012
         phase: train                                          ###########
-        input_file: /home/zhuye/VQ-Diffusion/image_synthesis/data/img_train.txt                   ###########
+        input_file: ./image_synthesis/data/img_train.txt                   ###########
+        inter_negative_samples: True
         im_preprocessor_config:
           target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
           params:
@@ -116,7 +122,8 @@ dataloader:
       params:
         data_root: /mnt/blob/datasets/ImageNet-2012
         phase: val
-        input_file: /home/zhuye/VQ-Diffusion/image_synthesis/data/img_val.txt
+        input_file: ./image_synthesis/data/img_val.txt
+        inter_negative_samples: False
         im_preprocessor_config:
           target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
           params:
