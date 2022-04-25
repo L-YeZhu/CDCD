@@ -38,10 +38,10 @@ model:
         adaptive_auxiliary_loss: True
         mask_weight: [1, 1]    # the loss weight on mask region and non-mask region
         contrastive_intra_loss_weight: 0
-        intra_mode: 'step'
+        intra_mode: 'step' # default to be step
         intra_neg_sample: 10
-        contrastive_inter_loss_weight: 0
-        inter_mode: 'step'
+        contrastive_inter_loss_weight: 5.0e-6
+        inter_mode: 'sample' # default to be sample
 
         transformer_config:
           target: image_synthesis.modeling.transformers.transformer_utils.Text2ImageTransformer
