@@ -417,7 +417,7 @@ class DiffusionTransformer(nn.Module):
         ### Contrastive intra loss
         if self.contrastive_intra_loss_weight != 0 and is_train == True and self.intra_mode == 'step':
             loss3 = 0
-            print("------Step Contrastive with Intra negatives!----")
+            # print("------Step Contrastive with Intra negatives!----")
             for k in range(self.intra_neg_sample):
                 x_shift = neg_sampling(x, mode='random')
                 # print("check num_classes:", self.num_classes) # 2048+1
@@ -438,7 +438,7 @@ class DiffusionTransformer(nn.Module):
             vb_loss -= loss3/self.intra_neg_sample
         elif self.contrastive_intra_loss_weight != 0 and is_train == True and self.intra_mode =='sample':
             loss3 = 0
-            print("------Sample Contrastive with Intra negatives!----")
+            # print("------Sample Contrastive with Intra negatives!----")
             for k in range(self.intra_neg_sample):
                 x_shift = neg_sampling(x, mode='random')
                 # print("x_shift for intra:", x_shift.size())
@@ -460,7 +460,7 @@ class DiffusionTransformer(nn.Module):
         ### Contrastive inter loss
         if self.contrastive_inter_loss_weight != 0 and is_train == True and self.inter_mode == 'sample' and negative_img != None:
             loss4 = 0
-            print("------Sample Contrastive with Inter negatives!----")
+            # print("------Sample Contrastive with Inter negatives!----")
             extra_sample = 10 # negative_img.size()[1]
             for k in range(extra_sample):
                 x_extra = negative_img[:,k,:]
@@ -482,7 +482,7 @@ class DiffusionTransformer(nn.Module):
 
         if self.contrastive_inter_loss_weight != 0 and is_train == True and self.inter_mode == 'step' and negative_img != None:
             loss4 = 0
-            print("------Step Contrastive with Inter negatives!----")
+            # print("------Step Contrastive with Inter negatives!----")
             for k in range(10):
                 x_extra = negative_img[:,k,:]
                 log_x_extra = index_to_log_onehot(x_extra, self.num_classes)
@@ -498,7 +498,7 @@ class DiffusionTransformer(nn.Module):
                 else:
                     addition_loss_weight = 1.0
                 loss4 += addition_loss_weight * self.contrastive_inter_loss_weight * kl_extra_loss / pt
-                print("Step Contrastive with intra negative:", k, loss4)
+                # print("Step Contrastive with intra negative:", k, loss4)
             vb_loss -= loss4/10 
 
 

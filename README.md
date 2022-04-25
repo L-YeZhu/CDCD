@@ -1,6 +1,8 @@
 # CDCD
  Conditioned Discrete Contrastive Diffusion
 
+## Sample-wise contrastive diffusion + inter negative samples
+
 ### To run the sample-wise contrastive diffusion for the image generation task, the env setup is the same as previous step-wise constrastive diffusion setting.
 Compared to the previous step-wise diffusion, I modify the dataloader to include extra negative samples, and add the sample-wise auxiliary contrastive loss in diffusion.
 
@@ -37,3 +39,8 @@ For the experiments on the ImageNet, the pretrained vqgan model is different, ne
 CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_imagenet.py
 ```
 In case of running on the cluster, a bash script may be further needed to submit the job.
+
+
+## Step-wise contrastive diffusion + intra negative samples
+
+To run the step-wise contrastive diffusion w/ intra negative samples, just need to modify the --contrastive_intra_loss_weight param to be a weight that not non-zero (5.0e-6 suggested, max 5.0e-5), and change the --contrastive_inter_loss_weight to be 0. 
