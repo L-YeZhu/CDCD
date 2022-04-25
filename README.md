@@ -1,7 +1,7 @@
 # CDCD
  Conditioned Discrete Contrastive Diffusion
 
-## To run the sample-wise contrastive diffusion for the image generation task, the env setup is the same as previous step-wise constrastive diffusion setting.
+### To run the sample-wise contrastive diffusion for the image generation task, the env setup is the same as previous step-wise constrastive diffusion setting.
 Compared to the previous step-wise diffusion, I modify the dataloader to include extra negative samples, and add the sample-wise auxiliary contrastive loss in diffusion.
 
 ### COCO Dataset
