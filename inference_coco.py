@@ -165,7 +165,7 @@ if __name__ == '__main__':
         print(index,  cap)
         caption_txt.write(cap)
         caption_txt.write('\n')
-        VQ_Diffusion.inference_generate_sample_with_condition(cap.lower(),truncation_rate=0.85, save_root="/data/zhuye/Text2Image/coco_train_cd_step_t80/syn_test",batch_size=1, count=count)
+        VQ_Diffusion.inference_generate_sample_with_condition(cap,truncation_rate=0.85, save_root="/data/zhuye/Text2Image/coco_train_cd_step_t80/syn_test",batch_size=1, count=count)
 
 print("total cap count:", count)
 caption_txt.close()
