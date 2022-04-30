@@ -45,6 +45,11 @@ CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_imagenet.py
 ```
 In case of running on the cluster, a bash script may be further needed to submit the job.
 
+5. For class-conditioned synthesis inference on ImageNet, use the inference_imgnet.py script. Specify the config, checkpoint and output path in Line 133 and 134, then use the following command.
+```
+CUDA_VISIBLE_DEVICES=#ID python inference_imgnet.py
+```
+
 
 ## Step-wise contrastive diffusion + intra negative samples
 
