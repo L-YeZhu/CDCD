@@ -22,6 +22,11 @@ CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_coco.py
 ```
 In case of running on the cluster, a bash script may be further needed to submit the job.
 
+5. For inference on the COCO dataset, use the inferece_coco.py script. Please specify the config, checkpoint, data annotations, and the output path in Line 153, 154, 155 and 168 before executing the command line below.
+```
+CUDA_VISIBLE_DEVICES=#ID python inference_coco.py
+```
+
 
 ### ImageNet Dataset
 
@@ -44,3 +49,5 @@ In case of running on the cluster, a bash script may be further needed to submit
 ## Step-wise contrastive diffusion + intra negative samples
 
 To run the step-wise contrastive diffusion w/ intra negative samples, just need to modify the --contrastive_intra_loss_weight param to be a weight that not non-zero (5.0e-6 suggested, max 5.0e-5), and change the --contrastive_inter_loss_weight to be 0. 
+
+
