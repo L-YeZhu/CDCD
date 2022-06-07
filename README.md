@@ -7,13 +7,13 @@
  ## 1. Project Overview
  In this work, we introduce our Conditional Discrete Contrastive Diffusion (CDCD) approach to enhance the input-output connections in cross-modal and conditional generation. 
  Specifically, we tackle the problem by maximizing the mutual information between the given input and the generated output via contrastive learning.
- We demonstrate the efficacy of the proposed approach in evaluations with three diverse, multimodal conditional synthesis tasks: dance-to-music generation, text-to-image synthesis, and class-conditioned image synthesis.
+ We demonstrate the efficacy of the proposed approach in evaluations with three diverse, multimodal conditional synthesis tasks on five datasets: dance-to-music generation on AIST++ and TikTok Dance-Music, text-to-image synthesis on CUB200 and MSCOCO, and class-conditioned image synthesis on ImageNet.
 
  <p align="center">
     <img src="assets/teaser.png" width="550">
 
 ## 2. Environment Setup
-The envirunment can be set up following the instructions below.
+The environment can be set up following the instructions below.
 The dance-to-music task requires the pretrained [JukeBox model](https://github.com/openai/jukebox), and the text-to-image task loads the pre-trained [DALL-E model](https://github.com/openai/DALL-E).
 
 ```
@@ -45,35 +45,43 @@ We follow the dataset preprations similar to the [VQ-Diffusion](https://github.c
 
 ## 4. Training
 
-To train the dance-to-music contrastive diffusion model on AIST++.
+
+### 4.1 Default training
+To perform dance-to-music on AIST++. This default setting trains contrastive diffusion model with 80 steps with step-wise parallel contrastive diffusion and intra-negative music samples.
 
 ```
 CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_aist.py 
 ```
 
-To train the dance-to-music contrastive diffusion model on TikTok Dance-Music.
+To perform dance-to-music on TikTok Dance-Music. This default setting trains contrastive diffusion model with 80 steps with step-wise parallel contrastive diffusion and intra-negative music samples.
 
 ```
 CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_tiktok.py 
 ```
 
-To train the text-to-image contrastive diffusion model on CUB200.
+To perform text-to-image on CUB200. This default setting trains contrastive diffusion model with 80 steps with sample-wise auxiliary diffusion and inter-negative image samples.
 
 ```
 CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_cub.py 
 ```
 
-To train the text-to-image contrastive diffusion model on MSCOCO.
+To perform text-to-image on MSCOCO. This default setting trains contrastive diffusion model with 80 steps with step-wise parallel diffusion and intra-negative image samples.
 
 ```
 CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_coco.py 
 ```
 
-To train the class conditioned image synthesis contrastive diffusion model on ImageNet.
+To perform class conditioned image synthesis on ImageNet. This default setting trains contrastive diffusion model with 80 steps with step-wise parallel diffusion and intra-negative image samples.
 
 ```
 CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_imgnet.py 
 ```
+
+### 4.2 Options for different contrastive diffusion settings
+As we described in our paper, there are several possible combinations with the contrastive diffusion modes and negative sampling methods. In addition to the default training settings, you can optionally select and play with these settings by making modifications as follows.
+
+To switch between the step-wise parallel and sample-wise auxiliary contrastive diffusion, modify the parameter ```contrastive_intra_loss_weight ```
+
 
 
 ## 5. Inference
