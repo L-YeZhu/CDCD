@@ -1,4 +1,4 @@
-# CDCD
+# Conditional Discrete Contrastive Diffusion (CDCD)
  This is the implementation of the **Conditional Discrete Contrastive Diffusion** approach for cross-modal and conditional generation.
 
  [Paper]() | [Project Page]()
@@ -10,7 +10,81 @@
  We demonstrate the efficacy of the proposed approach in evaluations with three diverse, multimodal conditional synthesis tasks: dance-to-music generation, text-to-image synthesis, and class-conditioned image synthesis.
 
  <p align="center">
-    <img src="assets/teaser.png" width="700">
+    <img src="assets/teaser.png" width="550">
+
+## 2. Environment Setup
+The envirunment can be set up following the instructions below.
+The dance-to-music task requires the pretrained [JukeBox model](https://github.com/openai/jukebox), and the text-to-image task loads the pre-trained [DALL-E](https://github.com/openai/DALL-E).
+
+```
+conda create --name cdcd python=3.8
+source activate cdcd
+conda install mpi4py==3.0.3
+# install the pytorch and cudatoolkit based on your machine env.
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+git clone https://github.com/L-YeZhu/CDCD.git
+cd CDCD
+pip install -r requirements.txt
+pip install -e .
+```
+
+
+## 3. Dataset
+We conduct experiments on three diverse cross-modal and conditional generation tasks on five datasets: dance-to-music generation, text-to-image synthesis, and class-conditioned image synthesis.
+
+### 3.1 AIST++ Dataset for Dance-to-Music
+The AIST++ dataset is a subset of AIST dataset, which can be downloaded from [here](https://google.github.io/aistplusplus_dataset/download.html). We use the cross-modality data split for training and testing. 
+
+### 3.2 TikTok Dance-Music Dataset for Dance-to-Music
+The TikTok Dance-Music dataset includes the dance videos with paired music collected from "in the wild" environment, which can be downloaded from [here](https://github.com/L-YeZhu/D2M-GAN).
+
+### 3.3 Text-to-Image Datasets
+We follow the dataset preprations similar to the [VQ-Diffusion](https://github.com/cientgu/VQ-Diffusion) for the CUB200, MSCOCO, and ImageNet.
+
+
+
+## 4. Training
+
+To train the dance-to-music contrastive diffusion model on AIST++.
+
+```
+CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_aist.py 
+```
+
+To train the dance-to-music contrastive diffusion model on TikTok Dance-Music.
+
+```
+CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_tiktok.py 
+```
+
+To train the text-to-image contrastive diffusion model on CUB200.
+
+```
+CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_cub.py 
+```
+
+To train the text-to-image contrastive diffusion model on MSCOCO.
+
+```
+CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_coco.py 
+```
+
+To train the class conditioned image synthesis contrastive diffusion model on MSCOCO.
+
+```
+CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_imgnet.py 
+```
+
+
+## 5. Inference
+
+## 6. Citation
+If you find our work interesting and useful, please consider citing it.
+```
+
+```
+
+
 
 
 <!-- ## Sample-wise contrastive diffusion + inter negative samples
