@@ -14,13 +14,13 @@
 
 ## 2. Environment Setup
 The envirunment can be set up following the instructions below.
-The dance-to-music task requires the pretrained [JukeBox model](https://github.com/openai/jukebox), and the text-to-image task loads the pre-trained [DALL-E](https://github.com/openai/DALL-E).
+The dance-to-music task requires the pretrained [JukeBox model](https://github.com/openai/jukebox), and the text-to-image task loads the pre-trained [DALL-E model](https://github.com/openai/DALL-E).
 
 ```
 conda create --name cdcd python=3.8
 source activate cdcd
 conda install mpi4py==3.0.3
-# install the pytorch and cudatoolkit based on your machine env.
+# install the pytorch and cudatoolkit based on your machine.
 conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
 git clone https://github.com/L-YeZhu/CDCD.git
 cd CDCD
@@ -69,7 +69,7 @@ To train the text-to-image contrastive diffusion model on MSCOCO.
 CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_coco.py 
 ```
 
-To train the class conditioned image synthesis contrastive diffusion model on MSCOCO.
+To train the class conditioned image synthesis contrastive diffusion model on ImageNet.
 
 ```
 CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_imgnet.py 
@@ -78,11 +78,16 @@ CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_imgnet.py
 
 ## 5. Inference
 
+
+
 ## 6. Citation
 If you find our work interesting and useful, please consider citing it.
 ```
 
 ```
+
+## 7. Acknowledgement
+We would like to thank the previous related projects and authors for generously sharing their code and insights: [VQ-Diffusion](https://github.com/cientgu/VQ-Diffusion), [Taming Transformer](https://github.com/CompVis/taming-transformers), [CLIP](https://github.com/openai/CLIP), [JukeBox](https://github.com/openai/jukebox), [DALL-E model](https://github.com/openai/DALL-E), and [D2M-GAN](https://github.com/L-YeZhu/D2M-GAN).
 
 
 
