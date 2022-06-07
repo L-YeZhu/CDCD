@@ -1,7 +1,19 @@
 # CDCD
- Conditioned Discrete Contrastive Diffusion
+ This is the implementation of the **Conditional Discrete Contrastive Diffusion** approach for cross-modal and conditional generation.
 
-## Sample-wise contrastive diffusion + inter negative samples
+ [Paper]() | [Project Page]()
+
+
+ ## 1. Project Overview
+ In this work, we introduce our Conditional Discrete Contrastive Diffusion (CDCD) approach to enhance the input-output connections in cross-modal and conditional generation. 
+ Specifically, we tackle the problem by maximizing the mutual information between the given input and the generated output via contrastive learning.
+ We demonstrate the efficacy of the proposed approach in evaluations with three diverse, multimodal conditional synthesis tasks: dance-to-music generation, text-to-image synthesis, and class-conditioned image synthesis.
+
+ <p align="center">
+    <img src="assets/teaser.png" width="700">
+
+
+<!-- ## Sample-wise contrastive diffusion + inter negative samples
 
 ### To run the sample-wise contrastive diffusion for the image generation task, the env setup is the same as previous step-wise constrastive diffusion setting.
 Compared to the previous step-wise diffusion, I modify the dataloader to include extra negative samples, and add the sample-wise auxiliary contrastive loss in diffusion.
@@ -54,5 +66,5 @@ CUDA_VISIBLE_DEVICES=#ID python inference_imgnet.py
 ## Step-wise contrastive diffusion + intra negative samples
 
 To run the step-wise contrastive diffusion w/ intra negative samples, just need to modify the --contrastive_intra_loss_weight param to be a weight that not non-zero (5.0e-6 suggested, max 5.0e-5), and change the --contrastive_inter_loss_weight to be 0. 
-
+ -->
 
