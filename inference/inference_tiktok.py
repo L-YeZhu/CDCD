@@ -1,8 +1,7 @@
 # ------------------------------------------
-# VQ-Diffusion
-# Copyright (c) Microsoft Corporation.
+# CDCD for Dance-to-Music
 # Licensed under the MIT License.
-# written By Shuyang Gu
+# written by Ye ZHU
 # ------------------------------------------
 
 import os

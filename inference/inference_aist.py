@@ -200,13 +200,14 @@ def beat_scores(gt, syn):
 
 if __name__ == '__main__':
     
-    VQ_Diffusion = VQ_Diffusion('/data/zhuye/D2M-Diffusion/aist_train_s2_intra_t100/configs/config.yaml', path='/data/zhuye/D2M-Diffusion/aist_train_s2_intra_t100/checkpoint/last.pth')
+    # modify the path to your config file and model checkpoint
+    VQ_Diffusion = VQ_Diffusion('./config/config.yaml', path='./checkpoint/last.pth')
     sr = 22050
 
-    testing_music = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/aist_audio_test_segment.txt')]
-    cond_motion = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/aist_motion_test_segment.txt')]
-    cond_video = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/aist_video_test_segment.txt')]
-    genres = np.load('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/test_genre.npy')
+    testing_music = [line.rstrip() for line in open('./data/aist_audio_test_segment.txt')]
+    cond_motion = [line.rstrip() for line in open('./data/aist_motion_test_segment.txt')]
+    cond_video = [line.rstrip() for line in open('./data/aist_video_test_segment.txt')]
+    genres = np.load('./data/test_genre.npy')
     total_cover_score = 0
     total_hit_score = 0
     start_time = time.time()
@@ -228,7 +229,7 @@ if __name__ == '__main__':
         generated_audio = VQ_Diffusion.inference_music(music.unsqueeze(0).unsqueeze(1), motion, video, genre, mask=None, truncation_rate=0.86, save_root='RESULT', batch_size=1)
         generated_audio = nr.reduce_noise(y=generated_audio, sr=22050)
         file_audio = 'generated_sample_' + str(i) + '.wav'
-        file_audio = os.path.join('/home/zhuye/VQ-Diffusion_d2m/RESULT_aist', file_audio)
+        file_audio = os.path.join('./RESULT_aist', file_audio)
         sf.write(file_audio, generated_audio, 22050)
 
 

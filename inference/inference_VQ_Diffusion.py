@@ -1,8 +1,7 @@
 # ------------------------------------------
-# VQ-Diffusion
-# Copyright (c) Microsoft Corporation.
+# VQ-Diffusion inference script.
+# Copyright (c) to original project authors.
 # Licensed under the MIT License.
-# written By Shuyang Gu
 # ------------------------------------------
 
 import os

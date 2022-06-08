@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Contrastive Diffusion for Cross-Modal and Conditional Generation</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <base href="/"> -->
+
+    <link rel="stylesheet" href="./resources/bootstrap.min(1).css">
+</head>
+
+
+<body>
+<div class="container" id="main">
+    <div class="row">
+        <h2 class="col-md-12 text-center">
+            Contrastive Diffusion for Cross-Modal and Conditional Generation<br>
+            <small>
+                Ye Zhu, Yu Wu, Kyle Olszewski, Jian Ren, Sergey Tulyakov, Yan Yan
+            </small>
+        </h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3>
+              Comparisons
+            </h3>
+            <p class="text-justify">
+            We provide comparisons between the music samples generated from the same input video using different methods. <br>
+            <i>The first row</i> presents the input video with the original ground-truth high-quality audio track (left), and the music reconstructed from the JukeBox top-level model (right). It is worth noting that deep-learning based, high-quality music reconstruction itself remains a challenging research problem. As shown in the example below, the JukeBox top-level model (with a hop length of 128) reconstructs music with high noise levels and low overall quality and fidelity to the original. However, to reconstruct and generate high-quality audio with a smaller hop length and less noise using the bottom-level JukeBox model (with a hop length of 8) requires significantly more computation, <i>e.g.,</i> 3hrs for a 20-seconds music sample. In contrast, synthesizing this 4-second sample takes roughly 5 seconds on the same hardware. <br>
+            <i>The second row</i> portrays music samples generated via the existing MIDI-based methods Foley (left) and DANCE2MUSIC (right). The pre-defined standard music synthesizers do not introduce raw audio noise, but are usually limited to simple, mono-instrumental sound, which is typically not very appropriate for complex dance videos. <br>
+            <i>The third and forth rows</i> present music samples generated from the existing VQ-based music generation method D2M-GAN (left) and our contrastive diffusion approach (right). As shown, our method can synthesize longer music sequences with better correspondence to the input.
+            <br><br>
+
+        </div>
+    <div class="col-md-12" >
+    <div class="col-md-6">
+            <video id="v0" width="100%" controls="">
+                     <source src="./samples/motivation_gt.mp4"
+                         type="video/mp4"/>
+            </video>
+    </div>
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/recons_gt.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+
+    <div class="col-md-8 col-md-offset-2">
+      <p class="text-justify">
+        <i>Left:</i> GT audio from original video (genre: pop). <i>Right:</i> music reconstructed via the JukeBox top-level model.
+        <br><br>
+      </p>
+    </div>
+
+    </div>
+
+    <div class="col-md-12" >
+    <div class="col-md-6">
+            <video id="v0" width="100%" controls="">
+                     <source src="./samples/midi_comp1.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/motivation_midi.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+
+    <div class="col-md-8 col-md-offset-4">
+      <p class="text-justify">
+        Music samples generated using existing MIDI-based methods.
+        <br><br>
+      </p>
+    </div>
+
+    </div>
+
+    <div class="col-md-12" >
+
+    <div class="col-md-6">
+            <video id="v0" width="100%" controls="">
+                     <source src="./samples/d2m_comp1.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/cd_comp1.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+
+    </div>
+
+    <div class="col-md-12" >
+
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/d2m_tiktok.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/cd_tiktok.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+
+    <div class="col-md-10 col-md-offset-1">
+      <p class="text-justify">
+        <i>Left:</i> music samples generated via the existing VQ-based method D2M-GAN. <i>Right:</i> music samples from our contrastive diffusion model.
+        <br><br>
+      </p>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3>
+              Generated Samples for AIST++ and TikTok Datasets
+            </h3>
+            <p class="text-justify">
+    Although our main experiments use 2-second music samples, our proposed contrastive diffusion model is able to synthesize longer music sequences with reasonable coherence and rhythm, as seen in the AIST++ examples below. We also provide additional examples from the aforementioned TikTok dataset.
+            <br><br>
+
+        </div>
+    <div class="col-md-12" >
+    <div class="col-md-6">
+            <video id="v0" width="100%" controls="">
+                     <source src="./samples/cd2.mp4"
+                         type="video/mp4"/>
+            </video>
+    </div>
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/cd3.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+
+    </div>
+
+    <div class="col-md-12" >
+    <div class="col-md-6">
+            <video id="v0" width="100%" controls="">
+                     <source src="./samples/cd4.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/cd5.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+
+    </div>
+
+    <div class="col-md-12" >
+
+    <div class="col-md-6">
+      <video id="v0" width="100%" controls="">
+        <source src="./samples/tiktok1.mp4"
+                type="video/mp4"/>
+      </video>
+    </div>
+    <div class="col-md-6">
+      <video id="v0" width="100%" controls="">
+        <source src="./samples/tiktok2.mp4"
+                type="video/mp4"/>
+      </video>
+    </div>
+    <div class="col-md-6">
+      <video id="v0" width="100%" controls="">
+        <source src="./samples/tiktok3.mp4"
+                type="video/mp4"/>
+      </video>
+    </div>
+    <div class="col-md-6">
+      <video id="v0" width="100%" controls="">
+        <source src="./samples/tiktok5.mp4"
+                type="video/mp4"/>
+      </video>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3>
+              Preliminary Music Editing Results
+            </h3>
+            <p class="text-justify">
+              Here we present some preliminary results for music editing, in which we replace the original paired motion input with a different dance-music type.
+            <br><br>
+
+        </div>
+    <div class="col-md-12" >
+    <div class="col-md-6">
+            <video id="v0" width="100%" controls="">
+                     <source src="./samples/cd2.mp4"
+                         type="video/mp4"/>
+            </video>
+    </div>
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/edit_gbr_gkr.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+
+    <div class="col-md-8 col-md-offset-4">
+      <p class="text-justify">
+        Changing dance-music genre from <i>Breakdancing</i> to <i>Krumping</i>.
+        <br><br>
+      </p>
+    </div>
+
+    </div>
+
+    <div class="col-md-12" >
+    <div class="col-md-6">
+            <video id="v0" width="100%" controls="">
+                     <source src="./samples/cd5.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+    <div class="col-md-6">
+                <video id="v1" width="100%" controls="">
+                     <source src="./samples/edit_glh_mpo.mp4"
+                         type="video/mp4"/>
+                </video>
+    </div>
+
+    <div class="col-md-8 col-md-offset-4">
+      <p class="text-justify">
+        Changing dance-music genre from <i>LA style Hip-Hop</i> to <i>Pop</i>.
+        <br><br>
+      </p>
+    </div>
+
+    </div>
+    </div>
+
+</div>
+</body>
+</html>
