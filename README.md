@@ -87,7 +87,9 @@ CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_imgnet.py
 ### 4.2 Options for different contrastive diffusion settings
 As we described in our paper, there are several possible combinations with the contrastive diffusion modes and negative sampling methods. In addition to the default training settings, you can optionally select and play with these settings by making modifications as follows.
 
-To switch between the step-wise parallel and sample-wise auxiliary contrastive diffusion, modify the parameter ```contrastive_intra_loss_weight ```
+To switch between the step-wise parallel and sample-wise auxiliary contrastive diffusion, modify the weights for parameter ```contrastive_intra_loss_weight``` and ```contrastive_extra_loss_weight```,respectively. You can also run the vanilla version by setting both to be 0.
+
+Other parameters such as diffusion steps can also be changed in the config file.
 
 
 

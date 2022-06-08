@@ -9,8 +9,11 @@ mpi4py>=3.0.0
 tensorboard
 pyyaml
 noisereduce
-omegaconf pytorch-lightning
+omegaconf 
+pytorch-lightning
 timm==0.3.4
-lmdb tqdm
-einops ftfy
+lmdb 
+tqdm
+einops 
+ftfy
 git+https://github.com/openai/DALL-E.git
