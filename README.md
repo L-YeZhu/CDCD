@@ -95,8 +95,6 @@ To switch between the step-wise parallel and sample-wise auxiliary contrastive d
 
 Use the following command to do inference
 
-### 5.1 Inference for Dance-to-Music
-
 ```
 python inference/inference_aist.py
 ```
@@ -105,13 +103,9 @@ python inference/inference_aist.py
 python inference/inference_tiktok.py
 ```
 
-### 5.2 Inference for Text-to-Image
-
 ```
 python inference/inference_coco.py
 ```
-
-### 5.3 Inference for class-conditioned image synthesis
 
 ```
 python inference/inference_imgnet.py
