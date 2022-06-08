@@ -1,3 +1,9 @@
+# ------------------------------------------
+# CDCD for Dance-to-Music
+# Licensed under the MIT License.
+# written by Ye ZHU
+# ------------------------------------------
+
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
@@ -8,6 +14,13 @@ import argparse
 import numpy as np
 import torchvision
 from PIL import Image
+import librosa
+from librosa.core import load
+from librosa.util import normalize
+import soundfile as sf
+import noisereduce as nr
+import time
+
 
 from image_synthesis.utils.io import load_yaml_config
 from image_synthesis.modeling.build import build_model
@@ -125,10 +138,109 @@ class VQ_Diffusion():
             im.save(save_path)
 
 
-if __name__ == '__main__':
-    # VQ_Diffusion = VQ_Diffusion(config='OUTPUT/pretrained_model/config_text.yaml', path='OUTPUT/pretrained_model/human_pretrained.pth')
-    # VQ_Diffusion.inference_generate_sample_with_condition("a man with beard",truncation_rate=0.86, save_root="RESULT",batch_size=2,fast=2)  # fast is a int from 2 to 10
-    # VQ_Diffusion.inference_generate_sample_with_condition("a beautiful smiling woman",truncation_rate=0.85, save_root="RESULT",batch_size=8)
+    def inference_music(self, music, motion, video, genre, mask, truncation_rate, save_root, batch_size,fast=False):
+        os.makedirs(save_root, exist_ok=True)
 
-    VQ_Diffusion = VQ_Diffusion(config='OUTPUT/pretrained_model/config_imagenet.yaml', path='OUTPUT/pretrained_model/imagenet_pretrained.pth')
-    VQ_Diffusion.inference_generate_sample_with_class(493,truncation_rate=0.86, save_root="RESULT",batch_size=8)
+        data_i = {}
+        data_i['music'] = music
+        data_i['motion'] = motion
+        data_i['video'] = video
+        data_i['genre'] = genre
+        data_i['condiation_mask'] = mask
+        data_i['negative_music'] = None
+        # save_root_ = os.path.join(save_root)
+        os.makedirs(save_root, exist_ok=True)
+        if fast != False:
+            add_string = 'r,fast'+str(fast-1)
+        else:
+            add_string = 'r'
+        with torch.no_grad():
+            model_out = self.model.generate_content(
+                batch=data_i,
+                filter_ratio=0.1, # ensure that it actually generate from full mask
+                replicate=batch_size,
+                content_ratio=0.5,
+                return_att_weight=False,
+                sample_type="top"+str(truncation_rate)+add_string,
+            )
+        content = model_out['content']
+        print("Check content:", content.size())
+        # file_audio = os.path.join(save_root,'generated_sample.wav')
+        generated_audio = content.squeeze().detach().cpu().numpy()
+        # sf.write(file_audio, generated_audio, 22050)
+
+        return generated_audio
+
+
+
+
+def beat_detect(x, sr=22050):
+    onsets = librosa.onset.onset_detect(x, sr=sr, wait=1, delta=0.2, pre_avg=1, post_avg=1, post_max=1, units='time')
+    n = np.ceil( len(x) / sr)
+    beats = [0] * int(n)
+    for time in onsets:
+        beats[int(np.trunc(time))] = 1
+    return beats
+
+
+def beat_scores(gt, syn):
+    assert len(gt) == len(syn)
+    total_beats = sum(gt)
+    cover_beats = sum(syn)
+
+    hit_beats = 0
+    for i in range(len(gt)):
+        if gt[i] == 1 and gt[i] == syn[i]:
+            hit_beats += 1
+
+    return cover_beats/total_beats, hit_beats/total_beats
+
+
+
+
+if __name__ == '__main__':
+    
+    VQ_Diffusion = VQ_Diffusion('/data/zhuye/D2M-Diffusion/aist_train_s2_intra_t100/configs/config.yaml', path='/data/zhuye/D2M-Diffusion/aist_train_s2_intra_t100/checkpoint/last.pth')
+    sr = 22050
+
+    testing_music = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/aist_audio_test_segment.txt')]
+    cond_motion = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/aist_motion_test_segment.txt')]
+    cond_video = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/aist_video_test_segment.txt')]
+    genres = np.load('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/test_genre.npy')
+    total_cover_score = 0
+    total_hit_score = 0
+    start_time = time.time()
+    for i, f in enumerate(testing_music):
+        print(i)
+        print(testing_music[i])
+        print(cond_motion[i])
+        print(cond_video[i])
+        #start_time = time.time()
+        music, sampling_rate = load(testing_music[i]) 
+        motion = np.load(cond_motion[i])
+        video = np.load(cond_video[i])
+        genre = genres[i]
+        gt_beats = beat_detect(music)
+        music = torch.from_numpy(music).float()#.unsqueeze(0).unsqueeze(1)
+        motion = torch.from_numpy(motion).float().unsqueeze(0)
+        video = torch.from_numpy(video).float().unsqueeze(0)
+        genre = torch.from_numpy(genre).unsqueeze(0)
+        generated_audio = VQ_Diffusion.inference_music(music.unsqueeze(0).unsqueeze(1), motion, video, genre, mask=None, truncation_rate=0.86, save_root='RESULT', batch_size=1)
+        generated_audio = nr.reduce_noise(y=generated_audio, sr=22050)
+        file_audio = 'generated_sample_' + str(i) + '.wav'
+        file_audio = os.path.join('/home/zhuye/VQ-Diffusion_d2m/RESULT_aist', file_audio)
+        sf.write(file_audio, generated_audio, 22050)
+
+
+
+
+
+
+    
+ 
+
+
+
+
+
+

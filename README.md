@@ -4,6 +4,11 @@
  [Paper]() | [Project Page]()
 
 
+ ### TODO
+ - [ ] Pre-trained models release.
+ <!-- - [ ] I will summarize some training techniques and include them in the QA sections. -->
+
+
  ## 1. Project Overview
  In this work, we introduce our Conditional Discrete Contrastive Diffusion (CDCD) approach to enhance the input-output connections in cross-modal and conditional generation. 
  Specifically, we tackle the problem by maximizing the mutual information between the given input and the generated output via contrastive learning.
@@ -44,6 +49,8 @@ We follow the dataset preprations similar to the [VQ-Diffusion](https://github.c
 
 
 ## 4. Training
+
+Please check modify all the paths in the config files to match your machine before running experiments.
 
 
 ### 4.1 Default training
@@ -86,6 +93,29 @@ To switch between the step-wise parallel and sample-wise auxiliary contrastive d
 
 ## 5. Inference
 
+Use the following command to do inference
+
+### 5.1 Inference for Dance-to-Music
+
+```
+python inference/inference_aist.py
+```
+
+```
+python inference/inference_tiktok.py
+```
+
+### 5.2 Inference for Text-to-Image
+
+```
+python inference/inference_coco.py
+```
+
+### 5.3 Inference for class-conditioned image synthesis
+
+```
+python inference/inference_imgnet.py
+```
 
 
 ## 6. Citation
@@ -95,7 +125,7 @@ If you find our work interesting and useful, please consider citing it.
 ```
 
 ## 7. Acknowledgement
-We would like to thank the previous related projects and authors for generously sharing their code and insights: [VQ-Diffusion](https://github.com/cientgu/VQ-Diffusion), [Taming Transformer](https://github.com/CompVis/taming-transformers), [CLIP](https://github.com/openai/CLIP), [JukeBox](https://github.com/openai/jukebox), [DALL-E model](https://github.com/openai/DALL-E), and [D2M-GAN](https://github.com/L-YeZhu/D2M-GAN).
+We would like to thank the authors of previous related projects for generously sharing their code and insights: [VQ-Diffusion](https://github.com/cientgu/VQ-Diffusion), [Taming Transformer](https://github.com/CompVis/taming-transformers), [CLIP](https://github.com/openai/CLIP), [JukeBox](https://github.com/openai/jukebox), [DALL-E model](https://github.com/openai/DALL-E), and [D2M-GAN](https://github.com/L-YeZhu/D2M-GAN).
 
 
 

@@ -1,11 +1,11 @@
 # change from o4
 model:
-  target: image_synthesis.modeling.models.conditional_dalle.C_DALLE
+  target: synthesis.modeling.models.conditional_dalle.C_DALLE
   params:
     content_info: {key: image}
     condition_info: {key: label}
     content_codec_config: 
-      target: image_synthesis.modeling.codecs.image_codec.taming_gumbel_vqvae.TamingVQVAE
+      target: synthesis.modeling.codecs.image_codec.taming_gumbel_vqvae.TamingVQVAE
       params:
         trainable: False
         token_shape: [16, 16]
@@ -16,7 +16,7 @@ model:
         mapping_path: './help_folder/statistics/taming_vqvae_974.pt'
         # return_logits: True
     diffusion_config:      
-      target: image_synthesis.modeling.transformers.diffusion_transformer.DiffusionTransformer
+      target: synthesis.modeling.transformers.diffusion_transformer.DiffusionTransformer
       params:
         diffusion_step: 80
         alpha_init_type: 'alpha1'        
@@ -30,7 +30,7 @@ model:
         inter_mode: 'sample' # default to be sample
 
         transformer_config:
-          target: image_synthesis.modeling.transformers.transformer_utils.Condition2ImageTransformer
+          target: synthesis.modeling.transformers.transformer_utils.Condition2ImageTransformer
           params:
             attn_type: 'selfcondition'
             n_layer: 24
@@ -47,13 +47,13 @@ model:
             mlp_hidden_times: 4
             mlp_type: 'conv_mlp'
         condition_emb_config:
-          target: image_synthesis.modeling.embeddings.class_embedding.ClassEmbedding
+          target: synthesis.modeling.embeddings.class_embedding.ClassEmbedding
           params:
             num_embed: 1000 # 
             embed_dim: 512
             identity: True
         content_emb_config:
-          target: image_synthesis.modeling.embeddings.dalle_mask_image_embedding.DalleMaskImageEmbedding
+          target: synthesis.modeling.embeddings.dalle_mask_image_embedding.DalleMaskImageEmbedding
           params:
             num_embed: 974
             spatial_size: !!python/tuple [32, 32]
@@ -77,7 +77,7 @@ solver:
     device: cpu
 
   clip_grad_norm:
-    target: image_synthesis.engine.clip_grad_norm.ClipGradNorm
+    target: synthesis.engine.clip_grad_norm.ClipGradNorm
     params:
       start_iteration: 0
       end_iteration: 5000
@@ -91,7 +91,7 @@ solver:
         weight_decay: 4.5e-2
     scheduler:
       step_iteration: 1
-      target: image_synthesis.engine.lr_scheduler.ReduceLROnPlateauWithWarmup
+      target: synthesis.engine.lr_scheduler.ReduceLROnPlateauWithWarmup
       params:
         factor: 0.5
         patience: 100000
@@ -106,26 +106,26 @@ dataloader:
   batch_size: 24
   num_workers: 4
   train_datasets: # a list of configures, so we can combine several schedulers
-    - target: image_synthesis.data.imagenet_dataset.ImageNetDataset
+    - target: synthesis.data.imagenet_dataset.ImageNetDataset
       params:
         data_root: /mnt/blob/datasets/ImageNet-2012
         phase: train                                          ###########
-        input_file: ./image_synthesis/data/img_train.txt                   ###########
+        input_file: ./synthesis/data/img_train.txt                   ###########
         inter_negative_samples: True
         im_preprocessor_config:
-          target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
+          target: synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
           params:
             size: 256
             phase: train
   validation_datasets:
-    - target: image_synthesis.data.imagenet_dataset.ImageNetDataset
+    - target: synthesis.data.imagenet_dataset.ImageNetDataset
       params:
         data_root: /mnt/blob/datasets/ImageNet-2012
         phase: val
-        input_file: ./image_synthesis/data/img_val.txt
+        input_file: ./synthesis/data/img_val.txt
         inter_negative_samples: False
         im_preprocessor_config:
-          target: image_synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
+          target: synthesis.data.utils.image_preprocessor.DalleTransformerPreprocessor
           params:
             size: 256
             phase: val

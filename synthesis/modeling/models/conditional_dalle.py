@@ -1,8 +1,5 @@
 # ------------------------------------------
-# VQ-Diffusion
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
-# written By Shuyang Gu
+# Modified based on VQ-Diffusion Project
 # ------------------------------------------
 
 import torch
@@ -16,15 +13,14 @@ import os
 
 from torch.cuda.amp import autocast
 
-class DALLE(nn.Module):
+class C_DALLE(nn.Module):
     def __init__(
         self,
         *,
         content_info={'key': 'image'},
-        condition_info={'key': 'text'},
+        condition_info={'key': 'label'},
         negative_samples={'key': 'negative_img'},
         content_codec_config,
-        condition_codec_config,
         diffusion_config
     ):
         super().__init__()
@@ -32,11 +28,11 @@ class DALLE(nn.Module):
         self.condition_info = condition_info
         self.negative_info = negative_samples
         self.content_codec = instantiate_from_config(content_codec_config)
-        self.condition_codec = instantiate_from_config(condition_codec_config)
         self.transformer = instantiate_from_config(diffusion_config)
         self.truncation_forward = False
 
     def parameters(self, recurse=True, name=None):
+        # return super().parameters(recurse=True)
         if name is None or name == 'none':
             return super().parameters(recurse=recurse)
         else:
@@ -57,16 +53,13 @@ class DALLE(nn.Module):
         return self.transformer
 
     @torch.no_grad()
-    def prepare_condition(self, batch, condition=None):
+    def prepare_condition(self, batch):
         cond_key = self.condition_info['key']
-        cond = batch[cond_key] if condition is None else condition
+        cond = batch[cond_key]
         if torch.is_tensor(cond):
             cond = cond.to(self.device)
-        cond = self.condition_codec.get_tokens(cond)
         cond_ = {}
-        for k, v in cond.items():
-            v = v.to(self.device) if torch.is_tensor(v) else v
-            cond_['condition_' + k] = v
+        cond_['condition_token'] = cond
         return cond_
 
     @autocast(enabled=False)
@@ -74,7 +67,6 @@ class DALLE(nn.Module):
     def prepare_content(self, batch, with_mask=False):
         cont_key = self.content_info['key']
         cont = batch[cont_key]
-        # print("check original cont size:", cont.size())
         if torch.is_tensor(cont):
             cont = cont.to(self.device)
         if not with_mask:
@@ -85,7 +77,6 @@ class DALLE(nn.Module):
         cont_ = {}
         for k, v in cont.items():
             v = v.to(self.device) if torch.is_tensor(v) else v
-            # print("check k and v:", k, v, v.size())
             cont_['content_' + k] = v
 
         negative_key = self.negative_info['key']
@@ -111,28 +102,13 @@ class DALLE(nn.Module):
         else:
             cont_['negative_token'] = None
 
-        # print("check final neg token:", negative_token.size())
-
-
         return cont_
-
-    @autocast(enabled=False)
+    
     @torch.no_grad()
     def prepare_input(self, batch):
         input = self.prepare_condition(batch)
         input.update(self.prepare_content(batch))
         return input
-
-    def p_sample_with_truncation(self, func, sample_type):
-        truncation_rate = float(sample_type.replace('q', ''))
-        def wrapper(*args, **kwards):
-            out = func(*args, **kwards)
-            import random
-            if random.random() < truncation_rate:
-                out = func(out, args[1], args[2], **kwards)
-            return out
-        return wrapper
-
 
     def predict_start_with_truncation(self, func, sample_type):
         if sample_type[-1] == 'p':
@@ -150,8 +126,7 @@ class DALLE(nn.Module):
             truncation_r = float(sample_type[:-1].replace('top', ''))
             def wrapper(*args, **kwards):
                 out = func(*args, **kwards)
-                # notice for different batches, out are same, we do it on out[0]
-                temp, indices = torch.sort(out, 1, descending=True) 
+                temp, indices = torch.sort(out, 1, descending=True)
                 temp1 = torch.exp(temp)
                 temp2 = temp1.cumsum(dim=1)
                 temp3 = temp2 < truncation_r
@@ -163,9 +138,9 @@ class DALLE(nn.Module):
                 probs = temp5
                 return probs
             return wrapper
-
         else:
             print("wrong sample type")
+
 
     @torch.no_grad()
     def generate_content(
@@ -178,43 +153,31 @@ class DALLE(nn.Module):
         content_ratio = 0.0,
         replicate=1,
         return_att_weight=False,
-        sample_type="top0.85r",
+        sample_type="normal",
     ):
         self.eval()
+        if type(batch['label']) == list:
+            batch['label']=torch.tensor(batch['label'])
         if condition is None:
             condition = self.prepare_condition(batch=batch)
         else:
             condition = self.prepare_condition(batch=None, condition=condition)
         
+        # content = None
+
         if replicate != 1:
             for k in condition.keys():
                 if condition[k] is not None:
                     condition[k] = torch.cat([condition[k] for _ in range(replicate)], dim=0)
-            
+        
+        
         content_token = None
 
-        if len(sample_type.split(',')) > 1:
-            if sample_type.split(',')[1][:1]=='q':
-                self.transformer.p_sample = self.p_sample_with_truncation(self.transformer.p_sample, sample_type.split(',')[1])
         if sample_type.split(',')[0][:3] == "top" and self.truncation_forward == False:
             self.transformer.predict_start = self.predict_start_with_truncation(self.transformer.predict_start, sample_type.split(',')[0])
             self.truncation_forward = True
 
-        if len(sample_type.split(',')) == 2 and sample_type.split(',')[1][:4]=='fast':
-            trans_out = self.transformer.sample_fast(condition_token=condition['condition_token'],
-                                                condition_mask=condition.get('condition_mask', None),
-                                                condition_embed=condition.get('condition_embed_token', None),
-                                                content_token=content_token,
-                                                filter_ratio=filter_ratio,
-                                                temperature=temperature,
-                                                return_att_weight=return_att_weight,
-                                                return_logits=False,
-                                                print_log=False,
-                                                sample_type=sample_type,
-                                                skip_step=int(sample_type.split(',')[1][4:]))
-
-        else:
-            trans_out = self.transformer.sample(condition_token=condition['condition_token'],
+        trans_out = self.transformer.sample(condition_token=condition['condition_token'],
                                             condition_mask=condition.get('condition_mask', None),
                                             condition_embed=condition.get('condition_embed_token', None),
                                             content_token=content_token,
@@ -224,8 +187,7 @@ class DALLE(nn.Module):
                                             return_logits=False,
                                             print_log=False,
                                             sample_type=sample_type)
-
-
+        
         content = self.content_codec.decode(trans_out['content_token'])  #(8,1024)->(8,3,256,256)
         self.train()
         out = {
@@ -271,6 +233,8 @@ class DALLE(nn.Module):
         content_samples = {'input_image': batch[self.content_info['key']]}
         if return_rec:
             content_samples['reconstruction_image'] = self.content_codec.decode(content['content_token'])  
+
+        # import pdb; pdb.set_trace()
 
         for fr in filter_ratio:
             for cr in content_ratio:

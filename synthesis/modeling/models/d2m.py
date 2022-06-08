@@ -1,8 +1,6 @@
 # ------------------------------------------
-# VQ-Diffusion
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
-# written By Shuyang Gu
+# CDCD for Dance-to-Music generation
+# written By Ye Zhu
 # ------------------------------------------
 
 import torch
@@ -379,7 +377,7 @@ class D2M(nn.Module):
                 content_samples['reconstruction_music{}'.format(k)]  = out
                 out = out[k,:,:].squeeze()
                 recons_sample = 'reconstruction_music' + str(k) + '.wav'
-                recons_sample = '/home/zhuye/VQ-Diffusion/audios/' + recons_sample
+                recons_sample = '/home/zhuye/VQ-Diffusion_d2m/audios/' + recons_sample
                 sf.write(recons_sample, out.detach().cpu().numpy(), 22050)
 
         for fr in filter_ratio:

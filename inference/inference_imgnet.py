@@ -1,14 +1,10 @@
 # ------------------------------------------
-# VQ-Diffusion
-# Copyright (c) Microsoft Corporation.
+# Modified based on VQ-Diffusion Project.
 # Licensed under the MIT License.
-# written By Shuyang Gu
 # ------------------------------------------
 
 import os
 import sys
-import pickle
-from tqdm import tqdm
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 
 import torch
@@ -17,7 +13,6 @@ import argparse
 import numpy as np
 import torchvision
 from PIL import Image
-import json
 
 from image_synthesis.utils.io import load_yaml_config
 from image_synthesis.modeling.build import build_model
@@ -98,7 +93,7 @@ class VQ_Diffusion():
             im = Image.fromarray(content[b])
             im.save(save_path)
 
-    def inference_generate_sample_with_condition(self, text, truncation_rate, save_root, batch_size, count,fast=False):
+    def inference_generate_sample_with_condition(self, text, truncation_rate, save_root, batch_size,fast=False):
         os.makedirs(save_root, exist_ok=True)
 
         data_i = {}
@@ -108,8 +103,7 @@ class VQ_Diffusion():
 
         str_cond = str(condition)
         save_root_ = os.path.join(save_root, str_cond)
-        os.makedirs(save_root, exist_ok=True)
-        #os.makedirs(save_root_, exist_ok=True)
+        os.makedirs(save_root_, exist_ok=True)
 
         if fast != False:
             add_string = 'r,fast'+str(fast-1)
@@ -131,45 +125,12 @@ class VQ_Diffusion():
         for b in range(content.shape[0]):
             cnt = b
             save_base_name = '{}'.format(str(cnt).zfill(6))
-            #print("check str_cond:",str_cond)
-            str_cond = str_cond.replace(" ","").replace(".","_").replace("/","")
-            #print("check new str_cond:",str_cond)
-            #exit()
-            save_base_name = str_cond + save_base_name
-            save_path = os.path.join(save_root, str(count)+'.png')
+            save_path = os.path.join(save_root_, save_base_name+'.png')
             im = Image.fromarray(content[b])
             im.save(save_path)
 
 
 if __name__ == '__main__':
-    # VQ_Diffusion = VQ_Diffusion(config='OUTPUT/pretrained_model/config_text.yaml', path='OUTPUT/pretrained_model/human_pretrained.pth')
-    # VQ_Diffusion.inference_generate_sample_with_condition("a man with beard",truncation_rate=0.86, save_root="RESULT",batch_size=2,fast=2)  # fast is a int from 2 to 10
-    # VQ_Diffusion.inference_generate_sample_with_condition("a beautiful smiling woman",truncation_rate=0.85, save_root="RESULT",batch_size=8)
 
-    #VQ_Diffusion = VQ_Diffusion(config='OUTPUT/pretrained_model/config_imagenet.yaml', path='OUTPUT/pretrained_model/imagenet_pretrained.pth')
-    #VQ_Diffusion.inference_generate_sample_with_class(493,truncation_rate=0.86, save_root="RESULT",batch_size=8)
-
-
-    VQ_Diffusion = VQ_Diffusion(config='/data/zhuye/Text2Image/coco_train_cd_step_t80/configs/config.yaml', path='/data/zhuye/Text2Image/coco_train_cd_step_t80/checkpoint/last.pth')
-    data_root = "/data/zhuye/MSCOCO_Caption"
-    caption_file = os.path.join(data_root, "annotations/captions_val2014.json")
-    json_file = json.load(open(caption_file, 'r'))
-    captions = json_file['annotations']
-    num = len(captions)
-    caption_txt = open("coco_input_caption_inf.txt", 'w')
-    count = 0
-    for index in tqdm(range(num)):
-        caps = captions[index]
-        count += 1
-        cap = caps['caption'].lower()
-        print(index,  cap)
-        caption_txt.write(cap)
-        caption_txt.write('\n')
-        VQ_Diffusion.inference_generate_sample_with_condition(cap,truncation_rate=0.85, save_root="/data/zhuye/Text2Image/coco_train_cd_step_t80/syn_test",batch_size=1, count=count)
-
-print("total cap count:", count)
-caption_txt.close()
-
-
-
-
+    VQ_Diffusion = VQ_Diffusion(config='OUTPUT/pretrained_model/config_imagenet.yaml', path='OUTPUT/pretrained_model/imagenet_pretrained.pth')
+    VQ_Diffusion.inference_generate_sample_with_class(66,truncation_rate=0.86, save_root="RESULT",batch_size=8)

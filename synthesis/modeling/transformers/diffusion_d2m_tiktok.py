@@ -1,8 +1,7 @@
 # ------------------------------------------
-# VQ-Diffusion
-# Copyright (c) Microsoft Corporation.
+# CDCD for Dance-to-Music on TikTok dataset
 # Licensed under the MIT License.
-# written By Shuyang Gu
+# written By Ye ZHU
 # ------------------------------------------
 
 import math
@@ -177,6 +176,7 @@ class DiffusionTransformer(nn.Module):
         self.intra_neg_sample = intra_neg_sample
         self.extra_neg_sample = extra_neg_sample
         self.lin1 = nn.Linear(1024+2048+256, 1024)
+        self.lin2 = nn.Linear(1024+2048, 1024)
         self.vqvae.load_state_dict(torch.load(vqvae_load_path))
         self.vqvae.eval()
         self.intra_mode = intra_mode
@@ -647,9 +647,13 @@ class DiffusionTransformer(nn.Module):
         # print("Check genre_emb:", cond_emb.size())
         cond_motion = input['condition_motion']
         cond_video = input['condition_video']
-        # print("Check motion, video and genre condition embedding:", cond_motion.size(), cond_video.size(), cond_emb.size())
-        cond_emb = torch.cat((cond_motion, cond_video, cond_emb), 2)
-        cond_emb = self.lin1(cond_emb)
+        if cond_emb != None:
+            cond_emb = torch.cat((cond_motion, cond_video, cond_emb), 2)
+            cond_emb = self.lin1(cond_emb)
+        else:
+            cond_emb = torch.cat((cond_motion, cond_video), 2)
+            # print("Check motion, video and genre condition embedding:", cond_motion.size(), cond_video.size())
+            cond_emb = self.lin2(cond_emb)
         # print("Overall condition embedding:", cond_emb.size())
         # exit()
 
@@ -674,7 +678,6 @@ class DiffusionTransformer(nn.Module):
             self,
             condition_motion,
             condition_video,
-            condition_genre,
             condition_mask,
             condition_embed,
             content_token = None,
@@ -687,7 +690,6 @@ class DiffusionTransformer(nn.Module):
             **kwargs):
         input = {'condition_motion': condition_motion,
                 'condition_video': condition_video,
-                'condition_genre': condition_genre,
                 'content_token': content_token, 
                 'condition_mask': condition_mask,
                 'condition_embed_token': condition_embed,
@@ -720,8 +722,8 @@ class DiffusionTransformer(nn.Module):
         cond_motion = input['condition_motion']
         cond_video = input['condition_video']
         # print("Check motion, video and genre condition embedding:", cond_motion.size(), cond_video.size(), cond_emb.size())
-        cond_emb = torch.cat((cond_motion, cond_video, cond_emb), 2)
-        cond_emb = self.lin1(cond_emb)
+        cond_emb = torch.cat((cond_motion, cond_video), 2)
+        cond_emb = self.lin2(cond_emb)
 
 
 
@@ -763,7 +765,6 @@ class DiffusionTransformer(nn.Module):
             self,
             condition_motion,
             condition_video,
-            condition_genre,
             condition_mask,
             condition_embed,
             content_token = None,
@@ -777,7 +778,6 @@ class DiffusionTransformer(nn.Module):
             **kwargs):
         input = {'condition_motion': condition_motion,
                 'condition_video': condition_video,
-                'condition_genre': condition_genre,
                 'content_token': content_token, 
                 'condition_mask': condition_mask,
                 'condition_embed_token': condition_embed,

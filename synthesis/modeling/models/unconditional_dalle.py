@@ -1,8 +1,6 @@
 # ------------------------------------------
-# VQ-Diffusion
-# Copyright (c) Microsoft Corporation.
+# Modified based on the VQ-Diffusion Project
 # Licensed under the MIT License.
-# written By Shuyang Gu
 # ------------------------------------------
 
 import torch

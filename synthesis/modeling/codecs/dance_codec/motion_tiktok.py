@@ -47,20 +47,20 @@ class ResnetBlock(nn.Module):
 class MotionEncoder(nn.Module):
     def __init__(self, context_length):
         super().__init__()
-        self.lin1 = nn.Linear(219, 800)
+        self.lin1 = nn.Linear(75, 800)
         # self.lin2 = nn.Linear(789, 1024)
         self.lin2 = nn.Linear(786, 1024)
         model = [
-            nn.Conv1d(60*context_length, 512, kernel_size=6),
+            nn.Conv1d(60, 256, kernel_size=6),
             nn.LeakyReLU(0.2),
                 ]
-        model += [ResnetBlock(512, dilation=3**0)]
-        model += [ResnetBlock(512, dilation=3**1)]
-        model += [ResnetBlock(512, dilation=3**2)]
-        model += [ResnetBlock(512, dilation=3**3)]
+        model += [ResnetBlock(256, dilation=3**0)]
+        model += [ResnetBlock(256, dilation=3**1)]
+        model += [ResnetBlock(256, dilation=3**2)]
+        model += [ResnetBlock(256, dilation=3**3)]
         model += [
             nn.LeakyReLU(0.2),
-            nn.Conv1d(512, 512, kernel_size=4),
+            nn.Conv1d(256, 512, kernel_size=4),
                 ]
         model += [ResnetBlock(512, dilation=3**0)]
         model += [ResnetBlock(512, dilation=3**1)]
@@ -82,6 +82,9 @@ class MotionEncoder(nn.Module):
         self.apply(weights_init)
 
     def forward(self, x):
+        batch_size = x.size()[0]
+        x = torch.reshape(x, (batch_size, 60, 75))
+        # print("check x size:", x.size())
         x = self.lin1(x)
         out = self.model(x)
         # print("check out size:", out.size())
