@@ -26,10 +26,11 @@ conda create --name cdcd python=3.8
 source activate cdcd
 conda install mpi4py==3.0.3
 # install the pytorch and cudatoolkit based on your machine.
-conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+conda install pytorch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0 cudatoolkit=11.1 -c pytorch -c conda-forge
 git clone https://github.com/L-YeZhu/CDCD.git
 cd CDCD
 pip install -r requirements.txt
+cd ./synthesis/modeling/models/
 pip install -e .
 ```
 
