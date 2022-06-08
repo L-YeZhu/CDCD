@@ -51,7 +51,7 @@ We follow the dataset preprations similar to the [VQ-Diffusion](https://github.c
 
 ## 4. Training
 
-Please check modify all the paths in the config files to match your machine before running experiments.
+Please check and modify all the paths in the config files to match your machine before running experiments.
 
 
 ### 4.1 Default training
@@ -88,15 +88,14 @@ CUDA_VISIBLE_DEVICES=#IDS python running_command/run_train_imgnet.py
 ### 4.2 Options for different contrastive diffusion settings
 As we described in our paper, there are several possible combinations with the contrastive diffusion modes and negative sampling methods. In addition to the default training settings, you can optionally select and play with these settings by making modifications as follows.
 
-To switch between the step-wise parallel and sample-wise auxiliary contrastive diffusion, modify the weights for parameter ```contrastive_intra_loss_weight``` and ```contrastive_extra_loss_weight```,respectively. You can also run the vanilla version by setting both to be 0.
-
+To switch between the step-wise parallel and sample-wise auxiliary contrastive diffusion, modify the weights for parameter ```--contrastive_intra_loss_weight``` and ```--contrastive_extra_loss_weight```,respectively. You can also run the vanilla version by setting both to be 0, or include both.
 Other parameters such as diffusion steps can also be changed in the config file.
 
 
 
 ## 5. Inference
 
-Use the following command to do inference
+Use the following commands to do inference.
 
 ```
 python inference/inference_aist.py
