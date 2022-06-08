@@ -16,4 +16,5 @@ lmdb
 tqdm
 einops 
 ftfy
+albumentations
 git+https://github.com/openai/DALL-E.git
