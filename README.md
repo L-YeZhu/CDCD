@@ -1,7 +1,7 @@
 # Conditional Discrete Contrastive Diffusion (CDCD)
  This is the implementation of the **Conditional Discrete Contrastive Diffusion** approach for cross-modal and conditional generation.
 
- [Paper]() | [Project Page](https://l-yezhu.github.io/CDCD/)
+ [Paper](https://arxiv.org/abs/2206.07771) | [Project Page](https://l-yezhu.github.io/CDCD/)
 
 
  ### TODO
@@ -117,7 +117,12 @@ python inference/inference_imgnet.py
 ## 6. Citation
 If you find our work interesting and useful, please consider citing it.
 ```
-
+@article{yezhu2022cdcd,
+  title={Discrete Contrastive Diffusion for Cross-Modal and Conditional Generation},
+  author={Ye Zhu, Yu Wu, Kyle Olszewski, Jian Ren, Sergey Tulyakov, and Yan Yan},
+  journal={arXiv preprint arXiv:2206.07771},
+  year={2022}
+}
 ```
 
 ## 7. Acknowledgement
