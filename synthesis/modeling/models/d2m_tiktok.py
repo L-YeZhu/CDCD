@@ -6,7 +6,7 @@
 import torch
 import math
 from torch import nn
-from image_synthesis.utils.misc import instantiate_from_config
+from synthesis.utils.misc import instantiate_from_config
 import time
 import numpy as np
 from PIL import Image
