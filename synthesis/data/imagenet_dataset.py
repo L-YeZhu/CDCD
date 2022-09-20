@@ -5,7 +5,7 @@ from PIL import Image
 import os
 import json
 import random
-from image_synthesis.utils.misc import instantiate_from_config
+from synthesis.utils.misc import instantiate_from_config
 
 def load_img(filepath):
     # print("check filepath:", filepath)
@@ -20,7 +20,7 @@ class ImageNetDataset(Dataset):
         # input_file = os.path.join(data_root, input_file)
         input_file = input_file
 
-        temp_label = json.load(open('image_synthesis/data/imagenet_class_index.json', 'r'))
+        temp_label = json.load(open('synthesis/data/imagenet_class_index.json', 'r'))
         self.labels = {}
         for i in range(1000):
             self.labels[temp_label[str(i)][0]] = i
@@ -42,6 +42,7 @@ class ImageNetDataset(Dataset):
         self.A_size = len(self.A_paths)
         self.phase = phase
         self.inter_negative_samples = inter_negative_samples
+        # self.data = []
         # print("check path:",  len(self.A_paths))
         # print("check labels:",  len(self.A_labels))
         # exit()
@@ -85,4 +86,5 @@ class ImageNetDataset(Dataset):
                     'image': np.transpose(A.astype(np.float32), (2, 0, 1)),
                     'label': A_label,
                 }
+        print("data:", data)
         return data

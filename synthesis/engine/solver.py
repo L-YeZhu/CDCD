@@ -16,12 +16,12 @@ import soundfile as sf
 from PIL import Image
 from torch.nn.utils import clip_grad_norm_, clip_grad_norm
 import torchvision
-from image_synthesis.utils.misc import instantiate_from_config, format_seconds
-from image_synthesis.distributed.distributed import reduce_dict
-from image_synthesis.distributed.distributed import is_primary, get_rank
-from image_synthesis.utils.misc import get_model_parameters_info
-from image_synthesis.engine.lr_scheduler import ReduceLROnPlateauWithWarmup, CosineAnnealingLRWithWarmup
-from image_synthesis.engine.ema import EMA
+from synthesis.utils.misc import instantiate_from_config, format_seconds
+from synthesis.distributed.distributed import reduce_dict
+from synthesis.distributed.distributed import is_primary, get_rank
+from synthesis.utils.misc import get_model_parameters_info
+from synthesis.engine.lr_scheduler import ReduceLROnPlateauWithWarmup, CosineAnnealingLRWithWarmup
+from synthesis.engine.ema import EMA
 from torch.optim.lr_scheduler import ReduceLROnPlateau, CosineAnnealingLR
 try:
     from torch.cuda.amp import autocast, GradScaler
@@ -78,15 +78,19 @@ class Solver(object):
             self.lr = base_lr * args.world_size * config['dataloader']['batch_size']
         else:
             raise NotImplementedError('Unknown type of adjust lr {}!'.format(adjust_lr))
+
         self.logger.log_info('Get lr {} from base lr {} with {}'.format(self.lr, base_lr, adjust_lr))
 
         if hasattr(model, 'get_optimizer_and_scheduler') and callable(getattr(model, 'get_optimizer_and_scheduler')):
             optimizer_and_scheduler = model.get_optimizer_and_scheduler(config['solver']['optimizers_and_schedulers'])
         else:
             optimizer_and_scheduler = self._get_optimizer_and_scheduler(config['solver']['optimizers_and_schedulers'])
+        # print("check optimizer and scheduler:", optimizer_and_scheduler)
 
         assert type(optimizer_and_scheduler) == type({}), 'optimizer and schduler should be a dict!'
         self.optimizer_and_scheduler = optimizer_and_scheduler
+
+        # print("check optimizer and scheduler 2:", optimizer_and_scheduler)
 
         # configre for ema
         if 'ema' in config['solver'] and args.local_rank == 0:

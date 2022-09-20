@@ -1,8 +1,8 @@
 import torch
-# from image_synthesis.data.base_dataset import ConcatDatasetWithIndex as ConcatDataset
+# from synthesis.data.base_dataset import ConcatDatasetWithIndex as ConcatDataset
 from torch.utils.data import ConcatDataset
-from image_synthesis.utils.misc import instantiate_from_config
-from image_synthesis.distributed.distributed import is_distributed
+from synthesis.utils.misc import instantiate_from_config
+from synthesis.distributed.distributed import is_distributed
 
 def build_dataloader(config, args=None, return_dataset=False):
     dataset_cfg = config['dataloader']

@@ -5,7 +5,7 @@ from PIL import Image
 import os
 import json
 import random
-from image_synthesis.utils.misc import instantiate_from_config
+from synthesis.utils.misc import instantiate_from_config
 
 def load_img(filepath):
     img = Image.open(filepath).convert('RGB')

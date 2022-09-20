@@ -3,14 +3,14 @@ import torch.nn as nn
 from omegaconf import OmegaConf
 import sys
 sys.path.append("..")
-# sys.path.append("../image_synthesis")
-from image_synthesis.utils.misc import instantiate_from_config
-from image_synthesis.taming.models.vqgan import GumbelVQ, VQModel
-from image_synthesis.taming.models.cond_transformer import Net2NetTransformer
+# sys.path.append("../synthesis")
+from synthesis.utils.misc import instantiate_from_config
+from synthesis.taming.models.vqgan import GumbelVQ, VQModel
+from synthesis.taming.models.cond_transformer import Net2NetTransformer
 import os
 import torchvision.transforms.functional as TF
 import PIL
-from image_synthesis.modeling.codecs.base_codec import BaseCodec
+from synthesis.modeling.codecs.base_codec import BaseCodec
 from einops import rearrange
 import math
 

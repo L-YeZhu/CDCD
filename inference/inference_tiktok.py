@@ -22,9 +22,9 @@ import noisereduce as nr
 import time
 
 
-from image_synthesis.utils.io import load_yaml_config
-from image_synthesis.modeling.build import build_model
-from image_synthesis.utils.misc import get_model_parameters_info
+from synthesis.utils.io import load_yaml_config
+from synthesis.modeling.build import build_model
+from synthesis.utils.misc import get_model_parameters_info
 
 class VQ_Diffusion():
     def __init__(self, config, path):
@@ -212,7 +212,7 @@ if __name__ == '__main__':
     # music, sampling_rate = load('/data/zhuye/aistplus/audio_s6/test/gPO_sBM_c01_d11_mPO1_ch02_seg1.wav', sr=22050)
     # motion = np.load('/data/zhuye/aistplus/motion_s6/test/gPO_sBM_c01_d11_mPO1_ch02_seg1.npy')
     # video = np.load('/data/zhuye/aistplus/video_s6/test/gPO_sBM_c01_d11_mPO1_ch02_seg1.npy')
-    # genre = np.load('/home/zhuye/VQ-Diffusion/image_synthesis/data/test_genre_s6.npy')[0]
+    # genre = np.load('/home/zhuye/VQ-Diffusion/synthesis/data/test_genre_s6.npy')[0]
     # gt_beats = beat_detect(music)
     # music = torch.from_numpy(music).float()#.unsqueeze(0).unsqueeze(1)
     # motion = torch.from_numpy(motion).float().unsqueeze(0)
@@ -235,7 +235,7 @@ if __name__ == '__main__':
     testing_music = [line.rstrip() for line in open('/home/zhuye/D2M-GAN/dataset/tiktok_audio_test_segment.txt')]
     cond_motion = [line.rstrip() for line in open('/home/zhuye/D2M-GAN/dataset/tiktok_motion_test_segment.txt')]
     cond_video = [line.rstrip() for line in open('/home/zhuye/D2M-GAN/dataset/tiktok_video_test_segment.txt')]
-    #genres = np.load('/home/zhuye/VQ-Diffusion_d2m/image_synthesis/data/test_genre.npy')
+    #genres = np.load('/home/zhuye/VQ-Diffusion_d2m/synthesis/data/test_genre.npy')
     total_cover_score = 0
     total_hit_score = 0
     start_time = time.time()

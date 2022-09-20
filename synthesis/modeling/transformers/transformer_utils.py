@@ -10,10 +10,10 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-from image_synthesis.utils.misc import instantiate_from_config
+from synthesis.utils.misc import instantiate_from_config
 import numpy as np
 from einops import rearrange
-from image_synthesis.distributed.distributed import is_primary, get_rank
+from synthesis.distributed.distributed import is_primary, get_rank
 
 from inspect import isfunction
 from torch.cuda.amp import autocast

@@ -10,13 +10,13 @@ import os
 import warnings
 import time
 import torch
-from image_synthesis.modeling.build import build_model
-from image_synthesis.data.build import build_dataloader
-from image_synthesis.utils.misc import seed_everything, merge_opts_to_config, modify_config_for_debug
-from image_synthesis.utils.io import load_yaml_config
-from image_synthesis.engine.logger import Logger
-from image_synthesis.engine.solver import Solver
-from image_synthesis.distributed.launch import launch
+from synthesis.modeling.build import build_model
+from synthesis.data.build import build_dataloader
+from synthesis.utils.misc import seed_everything, merge_opts_to_config, modify_config_for_debug
+from synthesis.utils.io import load_yaml_config
+from synthesis.engine.logger import Logger
+from synthesis.engine.solver import Solver
+from synthesis.distributed.launch import launch
 
 # environment variables
 NODE_RANK = os.environ['AZ_BATCHAI_TASK_INDEX'] if 'AZ_BATCHAI_TASK_INDEX' in os.environ else 0

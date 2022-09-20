@@ -20,9 +20,9 @@ from librosa.util import normalize
 import soundfile as sf
 
 
-from image_synthesis.utils.io import load_yaml_config
-from image_synthesis.modeling.build import build_model
-from image_synthesis.utils.misc import get_model_parameters_info
+from synthesis.utils.io import load_yaml_config
+from synthesis.modeling.build import build_model
+from synthesis.utils.misc import get_model_parameters_info
 
 class VQ_Diffusion():
     def __init__(self, config, path):
@@ -210,7 +210,7 @@ if __name__ == '__main__':
     # music, sampling_rate = load('/data/zhuye/aistplus/audio_s6/test/gPO_sBM_c01_d11_mPO1_ch02_seg1.wav', sr=22050)
     # motion = np.load('/data/zhuye/aistplus/motion_s6/test/gPO_sBM_c01_d11_mPO1_ch02_seg1.npy')
     # video = np.load('/data/zhuye/aistplus/video_s6/test/gPO_sBM_c01_d11_mPO1_ch02_seg1.npy')
-    # genre = np.load('/home/zhuye/VQ-Diffusion/image_synthesis/data/test_genre_s6.npy')[0]
+    # genre = np.load('/home/zhuye/VQ-Diffusion/synthesis/data/test_genre_s6.npy')[0]
     # gt_beats = beat_detect(music)
     # music = torch.from_numpy(music).float()#.unsqueeze(0).unsqueeze(1)
     # motion = torch.from_numpy(motion).float().unsqueeze(0)
@@ -230,10 +230,10 @@ if __name__ == '__main__':
 
 
     ### overall scores
-    testing_music = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion/image_synthesis/data/aist_audio_test_segment_s6.txt')]
-    cond_motion = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion/image_synthesis/data/aist_motion_test_segment_s6.txt')]
-    cond_video = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion/image_synthesis/data/aist_video_test_segment_s6.txt')]
-    genres = np.load('/home/zhuye/VQ-Diffusion/image_synthesis/data/test_genre_s6.npy')
+    testing_music = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion/synthesis/data/aist_audio_test_segment_s6.txt')]
+    cond_motion = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion/synthesis/data/aist_motion_test_segment_s6.txt')]
+    cond_video = [line.rstrip() for line in open('/home/zhuye/VQ-Diffusion/synthesis/data/aist_video_test_segment_s6.txt')]
+    genres = np.load('/home/zhuye/VQ-Diffusion/synthesis/data/test_genre_s6.npy')
     total_cover_score = 0
     total_hit_score = 0
     for i, f in enumerate(testing_music):

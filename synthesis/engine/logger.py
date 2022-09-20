@@ -6,8 +6,8 @@ import os
 import time
 import sys
 import torch
-from image_synthesis.utils.io import write_args, save_config_to_yaml
-from image_synthesis.distributed.distributed import is_primary
+from synthesis.utils.io import write_args, save_config_to_yaml
+from synthesis.distributed.distributed import is_primary
 import torch.utils.tensorboard as tensorboard
 # USE_TENSORBOARD = True
 # try:

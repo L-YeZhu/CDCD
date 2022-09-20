@@ -22,9 +22,9 @@ import noisereduce as nr
 import time
 
 
-from image_synthesis.utils.io import load_yaml_config
-from image_synthesis.modeling.build import build_model
-from image_synthesis.utils.misc import get_model_parameters_info
+from synthesis.utils.io import load_yaml_config
+from synthesis.modeling.build import build_model
+from synthesis.utils.misc import get_model_parameters_info
 
 class VQ_Diffusion():
     def __init__(self, config, path):

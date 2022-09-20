@@ -1,26 +1,26 @@
 # change from o4
 model:
-  target: image_synthesis.modeling.models.d2m_tiktok.D2M
+  target: synthesis.modeling.models.d2m_tiktok.D2M
   params:
     content_info: {key: music}
     condition_info_motion: {key: motion}
     condition_info_video: {key: video}
     hop_level: 'top' # top (128), or middle (32), bottom (8) 
-    vqvae_load_path: '/home/zhuye/VQ-Diffusion_d2m/image_synthesis/modeling/models/vqvae_high.pt'
+    vqvae_load_path: '/home/zhuye/VQ-Diffusion_d2m/synthesis/modeling/models/vqvae_high.pt'
     max_vq_len: 
 
     content_codec_config: 
-      target: image_synthesis.modeling.codecs.music_codec.jukebox_vqvae.VQVAE
+      target: synthesis.modeling.codecs.music_codec.jukebox_vqvae.VQVAE
       # params:
 
     condition_codec_config:
-      target: image_synthesis.modeling.codecs.dance_codec.motion_tiktok.MotionEncoder
+      target: synthesis.modeling.codecs.dance_codec.motion_tiktok.MotionEncoder
       params:
         context_length: 2 # the smaple length in seconds, 2 or 6
 
     diffusion_config:      
-    # target: image_synthesis.modeling.transformers.gpt_like_transformer.GPTLikeTransformer
-      target: image_synthesis.modeling.transformers.diffusion_d2m_tiktok.DiffusionTransformer
+    # target: synthesis.modeling.transformers.gpt_like_transformer.GPTLikeTransformer
+      target: synthesis.modeling.transformers.diffusion_d2m_tiktok.DiffusionTransformer
       params:
         diffusion_step: 100
         alpha_init_type: 'alpha1'       # init_type = fix or cos or linear 
@@ -29,7 +29,7 @@ model:
         contrastive_intra_loss_weight: 5.0e-5
         contrastive_extra_loss_weight: 0
         mask_weight: [1, 1]    # the loss weight on mask region and non-mask region
-        vqvae_load_path: '/home/zhuye/VQ-Diffusion_d2m/image_synthesis/modeling/models/vqvae_high.pt'
+        vqvae_load_path: '/home/zhuye/VQ-Diffusion_d2m/synthesis/modeling/models/vqvae_high.pt'
         hop_level: 'top'
         intra_neg_sample: 10
         extra_neg_sample: 10
@@ -37,10 +37,10 @@ model:
         extra_mode: 'step' 
 
         content_codec_config:
-          target: image_synthesis.modeling.codecs.music_codec.jukebox_vqvae.VQVAE
+          target: synthesis.modeling.codecs.music_codec.jukebox_vqvae.VQVAE
 
         transformer_config:
-          target: image_synthesis.modeling.transformers.transformer_utils.Text2ImageTransformer
+          target: synthesis.modeling.transformers.transformer_utils.Text2ImageTransformer
           params:
             attn_type: 'selfcross'
             n_layer: 19
@@ -57,7 +57,7 @@ model:
             mlp_hidden_times: 4
 
         content_emb_config:
-          target: image_synthesis.modeling.embeddings.d2m_mask_music_embedding.D2MMaskMusicEmbedding
+          target: synthesis.modeling.embeddings.d2m_mask_music_embedding.D2MMaskMusicEmbedding
           params:
             num_embed: 2048  #jukebox codebooksize
             spatial_size: !!python/tuple [1, 344]
@@ -81,7 +81,7 @@ solver:
     device: cpu
 
   clip_grad_norm:
-    target: image_synthesis.engine.clip_grad_norm.ClipGradNorm
+    target: synthesis.engine.clip_grad_norm.ClipGradNorm
     params:
       start_iteration: 0
       end_iteration: 5000
@@ -100,7 +100,7 @@ solver:
             # weight_decay: 4.5e-2
     scheduler:
       step_iteration: 1
-      target: image_synthesis.engine.lr_scheduler.ReduceLROnPlateauWithWarmup
+      target: synthesis.engine.lr_scheduler.ReduceLROnPlateauWithWarmup
       params:
         factor: 0.5
         patience: 60000
@@ -116,7 +116,7 @@ dataloader:
   batch_size: 12
   num_workers: 4
   train_datasets: # a list of configures, so we can combine several schedulers
-    - target: image_synthesis.data.tiktok_dataset.TikTokDataset
+    - target: synthesis.data.tiktok_dataset.TikTokDataset
       params:
         # data_root: /zhuye/data/aistplus
         phase: train
@@ -128,7 +128,7 @@ dataloader:
         segment_length: 2
 
   validation_datasets:
-    - target: image_synthesis.data.tiktok_dataset.TikTokDataset
+    - target: synthesis.data.tiktok_dataset.TikTokDataset
       params:
         # data_root: /zhuye/data/aistplus
         phase: val

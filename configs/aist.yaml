@@ -29,10 +29,10 @@ model:
         hop_level: 'top' 
 
         content_codec_config:
-          target: image_synthesis.modeling.codecs.music_codec.jukebox_vqvae.VQVAE
+          target: synthesis.modeling.codecs.music_codec.jukebox_vqvae.VQVAE
 
         transformer_config:
-          target: image_synthesis.modeling.transformers.transformer_utils.Text2ImageTransformer
+          target: synthesis.modeling.transformers.transformer_utils.Text2ImageTransformer
           params:
             attn_type: 'selfcross'
             n_layer: 19
@@ -124,7 +124,7 @@ dataloader:
         segment_length: 6
 
   validation_datasets:
-    - target: image_synthesis.data.aist_dataset.AISTDataset
+    - target: synthesis.data.aist_dataset.AISTDataset
       params:
         # data_root: /zhuye/data/aistplus
         phase: val

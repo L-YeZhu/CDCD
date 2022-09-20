@@ -12,7 +12,7 @@ import random
 from pathlib import Path
 from librosa.core import load
 from librosa.util import normalize
-from image_synthesis.utils.misc import instantiate_from_config
+from synthesis.utils.misc import instantiate_from_config
 
 
 def files_to_list(filename):

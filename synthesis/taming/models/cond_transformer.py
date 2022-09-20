@@ -3,8 +3,8 @@ import torch
 import torch.nn.functional as F
 import pytorch_lightning as pl
 
-from image_synthesis.utils.misc import instantiate_from_config
-from image_synthesis.taming.modules.util import SOSProvider
+from synthesis.utils.misc import instantiate_from_config
+from synthesis.taming.modules.util import SOSProvider
 
 
 def disabled_train(self, mode=True):
@@ -36,7 +36,7 @@ class Net2NetTransformer(pl.LightningModule):
         self.init_first_stage_from_ckpt(first_stage_config)
         self.init_cond_stage_from_ckpt(cond_stage_config)
         if permuter_config is None:
-            permuter_config = {"target": "image_synthesis.taming.modules.transformer.permuter.Identity"}
+            permuter_config = {"target": "synthesis.taming.modules.transformer.permuter.Identity"}
         self.permuter = instantiate_from_config(config=permuter_config)
         self.transformer = instantiate_from_config(config=transformer_config)
 

@@ -1,4 +1,4 @@
-from image_synthesis.utils.misc import instantiate_from_config
+from synthesis.utils.misc import instantiate_from_config
 
 
 def build_model(config, args=None):

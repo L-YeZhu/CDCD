@@ -4,7 +4,7 @@ from numpy.lib.npyio import save
 import torch
 import random
 import math
-from image_synthesis.distributed.distributed import all_reduce, get_world_size
+from synthesis.distributed.distributed import all_reduce, get_world_size
 
 def logits_top_k(logits, filter_ratio = 0.5, minimum=1, pad_value=None):
     logits = logits.contiguous()

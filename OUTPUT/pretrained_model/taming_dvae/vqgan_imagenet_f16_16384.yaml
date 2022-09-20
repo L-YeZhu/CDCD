@@ -1,6 +1,6 @@
 model:
   base_learning_rate: 4.5e-06
-  target: image_synthesis.taming.models.vqgan.VQModel
+  target: synthesis.taming.models.vqgan.VQModel
   params:
     embed_dim: 256
     n_embed: 16384
@@ -23,7 +23,7 @@ model:
       - 16
       dropout: 0.0
     lossconfig:
-      target: image_synthesis.taming.modules.losses.vqperceptual.VQLPIPSWithDiscriminator
+      target: synthesis.taming.modules.losses.vqperceptual.VQLPIPSWithDiscriminator
       params:
         disc_conditional: false
         disc_in_channels: 3

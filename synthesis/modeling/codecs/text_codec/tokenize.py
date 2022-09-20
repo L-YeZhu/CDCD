@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from image_synthesis.modeling.modules.clip.clip import tokenize
-from image_synthesis.modeling.codecs.base_codec import BaseCodec
-from image_synthesis.utils.misc import instantiate_from_config
+from synthesis.modeling.modules.clip.clip import tokenize
+from synthesis.modeling.codecs.base_codec import BaseCodec
+from synthesis.utils.misc import instantiate_from_config
 
 class Tokenize(BaseCodec):
     def __init__(self, context_length:int = 256,
@@ -13,7 +13,7 @@ class Tokenize(BaseCodec):
                  clip_embedding = False,
                  condition_emb_config = None,
                  tokenizer_config={
-                     'target': 'image_synthesis.modeling.modules.clip.simple_tokenizer.SimpleTokenizer',
+                     'target': 'synthesis.modeling.modules.clip.simple_tokenizer.SimpleTokenizer',
                      'params':{
                         'end_idx': 49152 # 16384 fo DALL-E
                         },

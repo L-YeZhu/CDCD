@@ -9,9 +9,9 @@ model:
         tokenizer_config:
           params:
             end_idx: 49152
-          target: image_synthesis.modeling.modules.clip.simple_tokenizer.SimpleTokenizer
+          target: synthesis.modeling.modules.clip.simple_tokenizer.SimpleTokenizer
         with_mask: true
-      target: image_synthesis.modeling.codecs.text_codec.tokenize.Tokenize
+      target: synthesis.modeling.codecs.text_codec.tokenize.Tokenize
     condition_info:
       key: text
     content_codec_config:
@@ -25,7 +25,7 @@ model:
         - 32
         - 32
         trainable: false
-      target: image_synthesis.modeling.codecs.image_codec.taming_gumbel_vqvae.TamingGumbelVQVAE
+      target: synthesis.modeling.codecs.image_codec.taming_gumbel_vqvae.TamingGumbelVQVAE
     content_info:
       key: image
     diffusion_config:
@@ -42,7 +42,7 @@ model:
             normalize: true
             num_embed: 49408
             pick_last_embedding: false
-          target: image_synthesis.modeling.embeddings.clip_text_embedding.CLIPTextEmbedding
+          target: synthesis.modeling.embeddings.clip_text_embedding.CLIPTextEmbedding
         content_emb_config:
           params:
             embed_dim: 1024
@@ -52,7 +52,7 @@ model:
             - 32
             - 32
             trainable: true
-          target: image_synthesis.modeling.embeddings.dalle_mask_image_embedding.DalleMaskImageEmbedding
+          target: synthesis.modeling.embeddings.dalle_mask_image_embedding.DalleMaskImageEmbedding
         diffusion_step: 100
         mask_weight:
         - 1
@@ -74,6 +74,6 @@ model:
             n_layer: 19
             resid_pdrop: 0.0
             timestep_type: adalayernorm
-          target: image_synthesis.modeling.transformers.transformer_utils.Text2ImageTransformer
-      target: image_synthesis.modeling.transformers.diffusion_transformer.DiffusionTransformer
-  target: image_synthesis.modeling.models.dalle.DALLE
+          target: synthesis.modeling.transformers.transformer_utils.Text2ImageTransformer
+      target: synthesis.modeling.transformers.diffusion_transformer.DiffusionTransformer
+  target: synthesis.modeling.models.dalle.DALLE
