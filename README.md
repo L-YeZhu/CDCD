@@ -4,8 +4,8 @@
  [Paper](https://arxiv.org/abs/2206.07771) | [Project Page](https://l-yezhu.github.io/CDCD/)
 
 
- ### TODO
- - [ ] Pre-trained models release.
+ <!-- ### TODO -->
+ <!-- - [ ] Pre-trained models release. -->
  <!-- - [ ] I will summarize some training techniques and include them in the QA sections. -->
 
 
@@ -52,6 +52,8 @@ We follow the dataset preprations similar to the [VQ-Diffusion](https://github.c
 ## 4. Training
 
 Please check and modify all the paths in the config files to match your machine before running experiments.
+
+Here are some pre-trained models for use: [AIST++](https://drive.google.com/file/d/1hUSnEAbuoxZC7NLQHn_2IEgC46eB3MST/view?usp=share_link), [TikTok](https://drive.google.com/file/d/1wZnMMeIH0wlGs9lRx7qa0lF27oI5tjur/view?usp=share_link), [CUB200](https://drive.google.com/file/d/1WedoI9KDbwr4hYJ9vg91ho8MgmGHFaBr/view?usp=share_link).
 
 
 ### 4.1 Default training
@@ -104,6 +106,11 @@ python inference/inference_aist.py
 ```
 python inference/inference_tiktok.py
 ```
+
+```
+python inference/inference_cub.py
+```
+
 
 ```
 python inference/inference_coco.py
