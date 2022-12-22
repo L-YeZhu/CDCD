@@ -15,7 +15,7 @@
  We demonstrate the efficacy of the proposed approach in evaluations with three diverse, multimodal conditional synthesis tasks on five datasets: dance-to-music generation on AIST++ and TikTok Dance-Music, text-to-image synthesis on CUB200 and MSCOCO, and class-conditioned image synthesis on ImageNet.
 
  <p align="center">
-    <img src="assets/teaser.png" width="550">
+    <img src="assets/teaser_white.png" width="550">
 
 ## 2. Environment Setup
 The environment can be set up following the instructions below.
