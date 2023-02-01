@@ -1,5 +1,5 @@
 # Conditional Discrete Contrastive Diffusion (CDCD)
- This is the implementation of the **Conditional Discrete Contrastive Diffusion** approach for cross-modal and conditional generation.
+ This is the implementation of the **Conditional Discrete Contrastive Diffusion** approach for cross-modal and conditional generation **(ICLR2023)**.
 
  [Paper](https://arxiv.org/abs/2206.07771) | [Project Page](https://l-yezhu.github.io/CDCD/)
 
