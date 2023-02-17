@@ -1,12 +1,13 @@
 # Conditional Discrete Contrastive Diffusion (CDCD)
  This is the implementation of the **Conditional Discrete Contrastive Diffusion** approach for cross-modal and conditional generation **(ICLR2023)**.
 
+Ye Zhu, Yu Wu, Kyle Olszewski, Jian Ren, Sergey Tulyakov, Yan Yan
+
  [Paper](https://arxiv.org/abs/2206.07771) | [Project Page](https://l-yezhu.github.io/CDCD/)
 
+### Updates:
 
- <!-- ### TODO -->
- <!-- - [ ] Pre-trained models release. -->
- <!-- - [ ] I will summarize some training techniques and include them in the QA sections. -->
+- If you are interested in applying pre-trained and frozen diffusion models for various downstream applications such as image editing, please also check my recent work [Boundary Guided Mixing Trajectory for Semantic Control with Diffusion Models](https://arxiv.org/abs/2302.08357), in which we introduce a **non-learning based** (thus super light-weight) method for image semantic control and manipulation by denoising trajectory guidance, thanks!
 
 
  ## 1. Project Overview
