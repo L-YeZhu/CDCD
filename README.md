@@ -125,11 +125,11 @@ python inference/inference_imgnet.py
 ## 6. Citation
 If you find our work interesting and useful, please consider citing it.
 ```
-@article{yezhu2022cdcd,
-  title={Discrete Contrastive Diffusion for Cross-Modal and Conditional Generation},
-  author={Ye Zhu, Yu Wu, Kyle Olszewski, Jian Ren, Sergey Tulyakov, and Yan Yan},
-  journal={arXiv preprint arXiv:2206.07771},
-  year={2022}
+@inproceedings{zhu2022discrete,
+  title={Discrete Contrastive Diffusion for Cross-Modal Music and Image Generation},
+  author={Zhu, Ye and Wu, Yu and Olszewski, Kyle and Ren, Jian and Tulyakov, Sergey and Yan, Yan},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2023}
 }
 ```
 
